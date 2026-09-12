@@ -1,0 +1,32 @@
+{
+  "name": "carbon-supply-chain-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Carbon-Aware Supply Chain Dashboard — React Frontend",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .jsx,.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "d3": "^7.9.0",
+    "d3-force": "^3.0.0",
+    "date-fns": "^3.6.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-force-graph-2d": "^1.29.1",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.2.1",
+    "react-router-dom": "^6.26.0",
+    "react-tooltip": "^5.27.1",
+    "recharts": "^2.15.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.3",
+    "vite": "^5.3.4"
+  }
+}

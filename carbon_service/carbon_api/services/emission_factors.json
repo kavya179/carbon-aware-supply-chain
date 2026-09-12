@@ -1,0 +1,46 @@
+{
+  "energy": {
+    "Grid Electricity": 0.23314,
+    "Natural Gas": 0.18254,
+    "Diesel": 2.6792,
+    "Petrol": 2.3123,
+    "Heavy Fuel Oil": 3.1754,
+    "Coal": 2.3439,
+    "Biomass": 0.0285,
+    "Solar": 0.0,
+    "Wind": 0.0,
+    "Hydroelectric": 0.0,
+    "LPG": 1.5550,
+    "Other": 0.2
+  },
+  "transport": {
+    "Road - HGV (Diesel)": 0.1072,
+    "Road - HGV (Electric)": 0.0372,
+    "Road - Van": 0.2459,
+    "Rail": 0.0280,
+    "Sea - Container": 0.0163,
+    "Sea - Bulk Carrier": 0.0073,
+    "Air - Freight": 0.6020,
+    "Air - Passenger": 0.2550,
+    "Pipeline": 0.0025,
+    "Inland Waterway": 0.0318,
+    "Other": 0.1072
+  },
+  "material": {
+    "Metals & Alloys": 1.85,
+    "Plastics & Polymers": 2.53,
+    "Chemicals": 1.12,
+    "Textiles & Fibres": 0.95,
+    "Electronics & Components": 3.00,
+    "Agricultural & Bio-based": 0.42,
+    "Packaging": 0.55,
+    "Construction Materials": 0.38,
+    "Fuels": 2.65,
+    "Other": 1.50
+  },
+  "metadata": {
+    "source": "DEFRA 2024 / IPCC AR6 / Ecoinvent 3.10",
+    "version": "1.0",
+    "lastUpdated": "2026-09-12"
+  }
+}
