@@ -1,125 +1,28 @@
-# Carbon-Aware Supply Chain Dashboard
+# Carbon-Aware Route Optimization in Supply Chain Networks Using Machine Learning and Genetic Algorithms
 
-A comprehensive platform to monitor and reduce **Scope 3 supply-chain carbon emissions** across multi-tier suppliers.
+## 🌍 Overview
+This framework integrates Machine Learning (an ensemble of Random Forest and XGBoost) with the NSGA-II Genetic Algorithm to optimize transportation routes. It balances the critical trade-off between reducing carbon emissions and managing operational costs within global supply chain networks.
 
----
-
-## 🏗️ Architecture
-
-```
-React.js Frontend (Vite)
-       │ HTTP REST (Port 5173)
-       ▼
-Node.js + Express.js API Gateway
-       │ HTTP REST (Port 5000)
-       ▼
-Django + Django REST Framework
-       │ ORM (Port 8000)
-       ▼
-Single SQLite Database (db.sqlite3)
-```
-
-### 🔒 Strict Database Policy
-- **SQLite ONLY**: Exactly one database file (`django_service/db.sqlite3`) serves the entire system.
-- **Managed Exclusively by Django**: Migrations, schema evolution, and models are handled via Django ORM.
-- **Node.js**: Operates strictly as a stateless application API layer / gateway. Node does **NOT** create, maintain, or connect to any secondary database.
-- **No Other Databases**: MongoDB, Mongoose, MySQL, PostgreSQL, Firebase, etc., are strictly excluded.
+### Key Results
+* **ML Performance:** Achieved 9.48% MAPE and 0.928 R² for emission prediction.
+* **Synthetic Experiments:** Demonstrated a 19.5% average emission reduction against a 4.7% cost increase across 3,500 modeled routes.
+* **Real-World Case Study:** Achieved a **41.4% emission reduction** with only an 8.6% cost increase (Salamanca network, n=12 major routes).
 
 ---
 
-## 📁 Project Structure
-
-```
-carbon-aware-supply-chain/
-│
-├── frontend/             # React.js web client (Vite)
-│   ├── src/              # React components & styles
-│   ├── package.json
-│   └── vite.config.js
-│
-├── backend/              # Node.js + Express API Gateway
-│   ├── src/
-│   │   └── index.js      # Main Express server & Django proxy
-│   ├── .env.example
-│   ├── .env
-│   └── package.json
-│
-├── django_service/       # Django + Django REST Framework service
-│   ├── core/             # Django project settings & health endpoints
-│   ├── db.sqlite3        # Single SQLite database
-│   ├── manage.py
-│   └── requirements.txt
-│
-├── ml/                   # ML models & training pipelines (scikit-learn, joblib)
-│   └── README.md
-│
-├── data/                 # Raw & processed emission datasets
-│   └── README.md
-│
-├── docs/                 # Architectural specifications
-│   └── architecture.md
-│
-├── .gitignore
-└── README.md
-```
+## ⚙️ Features
+* **Predictive Emissions Engine:** Utilizes gradient boosting and random forest architectures to accurately predict carbon output across multiple transport modes.
+* **Multi-Objective Optimization:** Uses the NSGA-II genetic algorithm to generate Pareto fronts, identifying optimal shifts in transportation modes (e.g., Road to Rail).
+* **Physics-Based Features:** Incorporates distance normalization, cargo weight interactions, and origin-destination embeddings.
+* **Real-World Data Integration:** Built to utilize real-world emission factors from the EPA and Climatiq APIs.
 
 ---
 
-## 🚀 How to Run the Services
+## 💻 Step-by-Step Guide to Run Locally on Your Laptop
 
-### 1. Start Django Intelligence Service (Port 8000)
+Follow these exact steps to run the code on your personal machine (Windows, macOS, or Linux).
 
+### Step 1: Clone the Repository
+First, download the code to your laptop. Open your Terminal (Mac/Linux) or Command Prompt/PowerShell (Windows) and run:
 ```bash
-cd django_service
-
-# Install dependencies (first time only)
-pip install -r requirements.txt
-
-# Run migrations to initialize SQLite database
-python manage.py migrate
-
-# Start the Django server
-python manage.py runserver 8000
-```
-- Health Check: `http://127.0.0.1:8000/api/health/`
-
----
-
-### 2. Start Node.js Express Backend (Port 5000)
-
-```bash
-cd backend
-
-# Install dependencies (first time only)
-npm install
-
-# Start Express server
-npm start
-# or for live watch mode:
-npm run dev
-```
-- Health Check: `http://localhost:5000/api/health`
-
----
-
-### 3. Start React Frontend (Port 5173)
-
-```bash
-cd frontend
-
-# Install dependencies (first time only)
-npm install
-
-# Start Vite dev server
-npm run dev
-```
-- Open your browser at: `http://localhost:5173`
-
----
-
-## 🧪 Verification & Health Check
-
-When both backend services are running, opening `http://localhost:5000/api/health` or `http://localhost:5173` verifies the full communication chain:
-```
-React (Port 5173) ──> Node.js (Port 5000) ──> Django (Port 8000) ──> SQLite (db.sqlite3)
-```
+git clone [https://github.com/lspusal/carbon-aware-route-optimization.git](https://github.com/lspusal/carbon-aware-route-optimization.git)
