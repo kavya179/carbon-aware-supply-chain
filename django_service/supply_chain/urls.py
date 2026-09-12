@@ -42,6 +42,12 @@ from .recommendation_views import (
     EnergyRecommendationsView,
     SupplierRecommendationsView
 )
+from .report_views import (
+    ReportDataView,
+    ReportGenerateView,
+    ReportPDFView,
+    ReportListView,
+)
 
 router = DefaultRouter()
 router.register(r'suppliers', SupplierViewSet, basename='supplier')
@@ -81,6 +87,12 @@ urlpatterns = [
     path('recommendations/transport/', TransportRecommendationsView.as_view(), name='recommendations-transport'),
     path('recommendations/energy/', EnergyRecommendationsView.as_view(), name='recommendations-energy'),
     path('recommendations/suppliers/', SupplierRecommendationsView.as_view(), name='recommendations-suppliers'),
+
+    # Carbon Reporting Endpoints (Phase 16)
+    path('reports/data/', ReportDataView.as_view(), name='reports-data'),
+    path('reports/generate/', ReportGenerateView.as_view(), name='reports-generate'),
+    path('reports/pdf/', ReportPDFView.as_view(), name='reports-pdf'),
+    path('reports/list/', ReportListView.as_view(), name='reports-list'),
 
     # Multi-Tier Carbon Aggregation & Analytics Endpoints (Phase 11)
     path('analytics/emissions/total/', TotalEmissionsView.as_view(), name='analytics-emissions-total'),

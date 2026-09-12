@@ -10,6 +10,7 @@ import HotspotsTable from './components/HotspotsTable';
 import SupplyChainNetwork from './components/SupplyChainNetwork';
 import RecommendationsPanel from './components/RecommendationsPanel';
 import AuditTrailPanel from './components/AuditTrailPanel';
+import ReportingPanel from './components/ReportingPanel';
 import './App.css';
 
 export default function App() {
@@ -165,6 +166,12 @@ export default function App() {
           >
             🛡️ Compliance & Audit Trail
           </button>
+          <button
+            className={`tab-btn ${activeTab === 'reports' ? 'tab-btn-active' : ''}`}
+            onClick={() => setActiveTab('reports')}
+          >
+            📋 Carbon Reports
+          </button>
         </div>
 
         <div className="meta-sync-pill">
@@ -276,6 +283,13 @@ export default function App() {
             {activeTab === 'audit' && (
               <div className="tab-content-fade">
                 <AuditTrailPanel period={period} />
+              </div>
+            )}
+
+            {/* TAB 6: CARBON REPORTING (Phase 16) */}
+            {activeTab === 'reports' && (
+              <div className="tab-content-fade">
+                <ReportingPanel period={period} />
               </div>
             )}
           </>

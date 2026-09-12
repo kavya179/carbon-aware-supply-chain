@@ -177,5 +177,31 @@ export const carbonApi = {
   async getCalculationTraces(period = null) {
     const query = period ? `?reporting_period=${encodeURIComponent(period)}` : '';
     return await apiRequest(`/audit-logs/calculation-traces/${query}`);
-  }
+  },
+
+  // Carbon Reporting (Phase 16)
+  async getReportData(period = null) {
+    const query = period ? `?period=${encodeURIComponent(period)}` : '';
+    return await apiRequest(`/reports/data/${query}`);
+  },
+
+  async generateReport(period = null, title = null) {
+    return await apiRequest('/reports/generate/', {
+      method: 'POST',
+      body: JSON.stringify({
+        period: period || null,
+        title: title || `Scope 3 Emissions Report — ${period || 'All Periods'}`,
+      }),
+    });
+  },
+
+  async listReports() {
+    return await apiRequest('/reports/list/');
+  },
+
+  getReportPDFUrl(period = null) {
+    const base = `${API_BASE_URL}/reports/pdf/`;
+    if (period) return `${base}?period=${encodeURIComponent(period)}`;
+    return base;
+  },
 };
