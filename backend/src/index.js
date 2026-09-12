@@ -9,11 +9,19 @@ const DJANGO_SERVICE_URL = process.env.DJANGO_SERVICE_URL || 'http://127.0.0.1:8
 app.use(cors());
 app.use(express.json());
 
+// Request logging middleware
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] [NODE GATEWAY] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
     message: 'Carbon-Aware Supply Chain Dashboard API Gateway',
-    architecture: 'React -> Node.js/Express -> Django REST Framework -> SQLite',
+    architecture: 'React (Port 5173) -> Node.js/Express (Port 5000) -> Django REST Framework (Port 8000) -> SQLite',
+    ml_subsystem: 'Node.js Gateway -> Django /api/ml/predict/ -> Python ML RandomForest Model -> Prediction',
     status: 'online'
   });
 });
@@ -61,7 +69,7 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// Forward all other /api/* requests directly to Django REST Framework
+// Forward all /api/* requests directly to Django REST Framework
 app.all('/api/*', async (req, res) => {
   try {
     const targetUrl = `${DJANGO_SERVICE_URL}${req.originalUrl}`;
@@ -78,6 +86,7 @@ app.all('/api/*', async (req, res) => {
       headers: {
         ...headers,
         'Accept': 'application/json',
+        'X-Gateway-Forwarded-By': 'Node.js-Express-Gateway'
       }
     };
 
@@ -90,6 +99,9 @@ app.all('/api/*', async (req, res) => {
     const contentType = djangoRes.headers.get('content-type');
 
     res.status(djangoRes.status);
+    res.setHeader('X-Gateway-Layer', 'Node.js/Express');
+    res.setHeader('X-Calculation-Backend', 'Django-REST-Framework');
+
     if (contentType && contentType.includes('application/json')) {
       const data = await djangoRes.json();
       return res.json(data);
@@ -98,7 +110,7 @@ app.all('/api/*', async (req, res) => {
       return res.send(text);
     }
   } catch (err) {
-    console.error(`[PROXY ERROR] ${req.method} ${req.originalUrl}:`, err);
+    console.error(`[GATEWAY PROXY ERROR] ${req.method} ${req.originalUrl}:`, err);
     return res.status(502).json({
       error: 'Bad Gateway',
       message: `Failed to forward request to Django: ${err.message}`,
@@ -107,11 +119,11 @@ app.all('/api/*', async (req, res) => {
   }
 });
 
-
 app.listen(PORT, () => {
   console.log(`=======================================================`);
-  console.log(`Node.js Express API running on port ${PORT}`);
+  console.log(`Node.js Express API Gateway running on port ${PORT}`);
   console.log(`Forwarding to Django service at: ${DJANGO_SERVICE_URL}`);
   console.log(`Database rule: Single SQLite database (via Django)`);
+  console.log(`ML rule: React -> Node -> Django -> ML Model`);
   console.log(`=======================================================`);
 });

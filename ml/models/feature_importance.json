@@ -1,0 +1,97 @@
+[
+  {
+    "feature": "material_proxy",
+    "importance": 0.9216,
+    "percentage": 92.16
+  },
+  {
+    "feature": "fuel_litres_monthly",
+    "importance": 0.0347,
+    "percentage": 3.47
+  },
+  {
+    "feature": "transport_proxy",
+    "importance": 0.0213,
+    "percentage": 2.13
+  },
+  {
+    "feature": "energy_emission_intensity",
+    "importance": 0.0103,
+    "percentage": 1.03
+  },
+  {
+    "feature": "energy_kwh_monthly",
+    "importance": 0.0033,
+    "percentage": 0.33
+  },
+  {
+    "feature": "material_qty_kg",
+    "importance": 0.0019,
+    "percentage": 0.19
+  },
+  {
+    "feature": "renewable_energy_pct",
+    "importance": 0.0012,
+    "percentage": 0.12
+  },
+  {
+    "feature": "adj_grid_factor",
+    "importance": 0.001,
+    "percentage": 0.1
+  },
+  {
+    "feature": "distance_km",
+    "importance": 0.0009,
+    "percentage": 0.09
+  },
+  {
+    "feature": "country_enc",
+    "importance": 0.0006,
+    "percentage": 0.06
+  },
+  {
+    "feature": "production_qty_units",
+    "importance": 0.0005,
+    "percentage": 0.05
+  },
+  {
+    "feature": "shipment_weight_t",
+    "importance": 0.0005,
+    "percentage": 0.05
+  },
+  {
+    "feature": "transport_ef_kgco2e_tonne_km",
+    "importance": 0.0004,
+    "percentage": 0.04
+  },
+  {
+    "feature": "industry_sector_enc",
+    "importance": 0.0004,
+    "percentage": 0.04
+  },
+  {
+    "feature": "transport_mode_enc",
+    "importance": 0.0004,
+    "percentage": 0.04
+  },
+  {
+    "feature": "grid_emission_factor",
+    "importance": 0.0003,
+    "percentage": 0.03
+  },
+  {
+    "feature": "material_type_enc",
+    "importance": 0.0003,
+    "percentage": 0.03
+  },
+  {
+    "feature": "supplier_tier",
+    "importance": 0.0002,
+    "percentage": 0.02
+  },
+  {
+    "feature": "material_ef_kgco2e_kg",
+    "importance": 0.0002,
+    "percentage": 0.02
+  }
+]

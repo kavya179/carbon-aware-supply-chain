@@ -1,0 +1,151 @@
+{
+  "evaluation_title": "Phase 18 -- ML Model Evaluation on Test Partition",
+  "model_name": "RandomForestRegressor",
+  "held_out_samples": 400,
+  "overall_metrics": {
+    "r2_score": 0.9906,
+    "mae_kg": 1907.96,
+    "rmse_kg": 7158.17,
+    "mape_pct": 7.25,
+    "median_absolute_error_kg": 640.07,
+    "p90_absolute_error_kg": 3055.11,
+    "p95_absolute_error_kg": 5388.13,
+    "mean_bias_kg": -288.5
+  },
+  "tier_breakdown": {
+    "Tier 1": {
+      "sample_count": 133,
+      "mean_true_kg": 25890.31,
+      "mae_kg": 1894.06,
+      "rmse_kg": 9012.52,
+      "mape_pct": 6.79
+    },
+    "Tier 2": {
+      "sample_count": 149,
+      "mean_true_kg": 22635.88,
+      "mae_kg": 1307.81,
+      "rmse_kg": 3421.31,
+      "mape_pct": 7.09
+    },
+    "Tier 3": {
+      "sample_count": 118,
+      "mean_true_kg": 38507.55,
+      "mae_kg": 2681.45,
+      "rmse_kg": 8207.39,
+      "mape_pct": 7.96
+    }
+  },
+  "sector_breakdown": {
+    "Agricultural Commodities": {
+      "sample_count": 30,
+      "mean_true_kg": 23310.95,
+      "mae_kg": 1798.26,
+      "mape_pct": 6.75
+    },
+    "Automotive Manufacturing": {
+      "sample_count": 15,
+      "mean_true_kg": 27100.37,
+      "mae_kg": 1350.85,
+      "mape_pct": 5.95
+    },
+    "Chemical Processing": {
+      "sample_count": 27,
+      "mean_true_kg": 11976.59,
+      "mae_kg": 1421.15,
+      "mape_pct": 11.45
+    },
+    "Construction Materials": {
+      "sample_count": 23,
+      "mean_true_kg": 8884.7,
+      "mae_kg": 1334.08,
+      "mape_pct": 15.08
+    },
+    "Electronics Assembly": {
+      "sample_count": 17,
+      "mean_true_kg": 25673.89,
+      "mae_kg": 869.14,
+      "mape_pct": 3.46
+    },
+    "Food Processing": {
+      "sample_count": 17,
+      "mean_true_kg": 11760.01,
+      "mae_kg": 567.33,
+      "mape_pct": 7.77
+    },
+    "Logistics & Freight": {
+      "sample_count": 30,
+      "mean_true_kg": 11367.31,
+      "mae_kg": 913.11,
+      "mape_pct": 9.06
+    },
+    "Mining & Raw Materials": {
+      "sample_count": 23,
+      "mean_true_kg": 16762.93,
+      "mae_kg": 1015.49,
+      "mape_pct": 7.08
+    },
+    "Packaging Materials": {
+      "sample_count": 35,
+      "mean_true_kg": 13665.5,
+      "mae_kg": 452.29,
+      "mape_pct": 4.63
+    },
+    "Pharmaceutical Manufacturing": {
+      "sample_count": 29,
+      "mean_true_kg": 13756.74,
+      "mae_kg": 566.27,
+      "mape_pct": 5.91
+    },
+    "Plastics Manufacturing": {
+      "sample_count": 29,
+      "mean_true_kg": 16871.71,
+      "mae_kg": 903.1,
+      "mape_pct": 6.83
+    },
+    "Renewable Energy Components": {
+      "sample_count": 31,
+      "mean_true_kg": 128102.94,
+      "mae_kg": 7968.86,
+      "mape_pct": 4.49
+    },
+    "Semiconductor Fabrication": {
+      "sample_count": 32,
+      "mean_true_kg": 34394.3,
+      "mae_kg": 2336.68,
+      "mape_pct": 6.8
+    },
+    "Steel & Metals": {
+      "sample_count": 29,
+      "mean_true_kg": 29356.96,
+      "mae_kg": 2825.38,
+      "mape_pct": 7.88
+    },
+    "Textiles & Apparel": {
+      "sample_count": 33,
+      "mean_true_kg": 32541.73,
+      "mae_kg": 2501.92,
+      "mape_pct": 6.31
+    }
+  },
+  "magnitude_breakdown": {
+    "Low (<10 tCO2e)": {
+      "sample_count": 130,
+      "mean_true_kg": 5575.41,
+      "mae_kg": 446.18,
+      "mape_pct": 9.22
+    },
+    "Medium (10-50 tCO2e)": {
+      "sample_count": 231,
+      "mean_true_kg": 22295.31,
+      "mae_kg": 1406.45,
+      "mape_pct": 6.39
+    },
+    "High (>50 tCO2e)": {
+      "sample_count": 39,
+      "mean_true_kg": 140641.77,
+      "mae_kg": 9751.08,
+      "mape_pct": 5.71
+    }
+  },
+  "governance_note": "Evaluation conducted on held-out test data. ML estimates are for filling missing activity data only. Primary Scope 3 accounting remains with the rule-based CarbonCalculationEngine."
+}

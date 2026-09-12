@@ -1,6 +1,7 @@
 import React from 'react';
+import ConceptTooltip from './ConceptTooltip';
 
-export default function KPIGrid({ dashboardData, hotspotsData }) {
+export default function KPIGrid({ dashboardData, hotspotsData, onOpenGuide }) {
   const kpis = dashboardData?.kpis || {};
   const tiers = dashboardData?.tier_breakdown || [];
   const hotspotsSummary = hotspotsData?.summary || {};
@@ -42,8 +43,18 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
           <h2 className="section-title">Executive Sustainability Metrics</h2>
           <p className="section-desc">Audited Scope 3 greenhouse gas performance across multi-tier supplier operations</p>
         </div>
-        <div className="metric-pill">
-          <span className="live-dot"></span> Live SQLite Verified Data
+        <div className="section-header-actions">
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={() => onOpenGuide && onOpenGuide('scope3')}
+            title="Open Scope 3 & ESG Concepts Reference Guide"
+          >
+            📖 Scope 3 Guide & Glossary
+          </button>
+          <div className="metric-pill">
+            <span className="live-dot"></span> Live SQLite Verified Data
+          </div>
         </div>
       </div>
 
@@ -51,7 +62,15 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
         {/* KPI 1: Total CO2e */}
         <div className="kpi-card highlight-card">
           <div className="kpi-header">
-            <span className="kpi-label">Total Scope 3 CO₂e</span>
+            <div className="kpi-title-wrap">
+              <span className="kpi-label">Total Scope 3 CO₂e</span>
+              <ConceptTooltip
+                conceptId="scope3"
+                label="Scope 3 & CO₂e"
+                tooltipText="Scope 3 accounts for indirect value chain emissions. CO₂e aggregates all GHGs (CO₂, CH₄, N₂O) normalized to 100-yr Global Warming Potential."
+                onOpenGuide={onOpenGuide}
+              />
+            </div>
             <span className="kpi-icon">🌍</span>
           </div>
           <div className="kpi-value-wrap">
@@ -59,14 +78,22 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
             <span className="kpi-unit">tCO₂e</span>
           </div>
           <div className="kpi-footer">
-            <span className="kpi-subtext">{totalKg} kg CO₂e total footprint</span>
+            <span className="kpi-subtext">{totalKg} kg CO₂e consolidated footprint</span>
           </div>
         </div>
 
         {/* KPI 2: Number of Suppliers */}
         <div className="kpi-card">
           <div className="kpi-header">
-            <span className="kpi-label">Supply Chain Entities</span>
+            <div className="kpi-title-wrap">
+              <span className="kpi-label">Supply Chain Entities</span>
+              <ConceptTooltip
+                conceptId="tiers"
+                label="Multi-Tier Supply Base"
+                tooltipText="All mapped supplier organizations across Tier 1 (direct), Tier 2 (components), and Tier 3 (raw materials)."
+                onOpenGuide={onOpenGuide}
+              />
+            </div>
             <span className="kpi-icon">🏢</span>
           </div>
           <div className="kpi-value-wrap">
@@ -81,7 +108,15 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
         {/* KPI 3: Tier 1 Emissions */}
         <div className="kpi-card">
           <div className="kpi-header">
-            <span className="kpi-label">Tier 1 (Direct Suppliers)</span>
+            <div className="kpi-title-wrap">
+              <span className="kpi-label">Tier 1 (Direct Suppliers)</span>
+              <ConceptTooltip
+                conceptId="tiers"
+                label="Tier 1 Suppliers"
+                tooltipText="Direct contractual suppliers (e.g. component assemblers) with whom purchase orders are placed."
+                onOpenGuide={onOpenGuide}
+              />
+            </div>
             <span className="kpi-tag tag-tier1">Tier 1</span>
           </div>
           <div className="kpi-value-wrap">
@@ -99,7 +134,15 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
         {/* KPI 4: Tier 2 Emissions */}
         <div className="kpi-card">
           <div className="kpi-header">
-            <span className="kpi-label">Tier 2 (Sub-Contractors)</span>
+            <div className="kpi-title-wrap">
+              <span className="kpi-label">Tier 2 (Sub-Contractors)</span>
+              <ConceptTooltip
+                conceptId="tiers"
+                label="Tier 2 Sub-tier"
+                tooltipText="Suppliers providing sub-assemblies to your Tier 1 vendors (e.g. semiconductor and cell makers)."
+                onOpenGuide={onOpenGuide}
+              />
+            </div>
             <span className="kpi-tag tag-tier2">Tier 2</span>
           </div>
           <div className="kpi-value-wrap">
@@ -117,7 +160,15 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
         {/* KPI 5: Tier 3 Emissions */}
         <div className="kpi-card">
           <div className="kpi-header">
-            <span className="kpi-label">Tier 3 (Raw Materials / Mining)</span>
+            <div className="kpi-title-wrap">
+              <span className="kpi-label">Tier 3 (Raw Materials / Mining)</span>
+              <ConceptTooltip
+                conceptId="tiers"
+                label="Tier 3 Upstream Extraction"
+                tooltipText="Base commodity extraction and smelting (e.g. lithium, aluminum, copper mines/refineries)."
+                onOpenGuide={onOpenGuide}
+              />
+            </div>
             <span className="kpi-tag tag-tier3">Tier 3</span>
           </div>
           <div className="kpi-value-wrap">
@@ -135,7 +186,15 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
         {/* KPI 6: Highest-Impact Supplier */}
         <div className="kpi-card">
           <div className="kpi-header">
-            <span className="kpi-label">Highest-Impact Supplier</span>
+            <div className="kpi-title-wrap">
+              <span className="kpi-label">Highest-Impact Supplier</span>
+              <ConceptTooltip
+                conceptId="hotspot"
+                label="Supplier Footprint Share"
+                tooltipText="The single supplier organization contributing the largest proportion of total Scope 3 carbon output."
+                onOpenGuide={onOpenGuide}
+              />
+            </div>
             <span className="kpi-icon">⚠️</span>
           </div>
           {highestImpactSupplier ? (
@@ -156,7 +215,15 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
         {/* KPI 7: Number of Hotspots */}
         <div className="kpi-card">
           <div className="kpi-header">
-            <span className="kpi-label">Carbon Hotspots</span>
+            <div className="kpi-title-wrap">
+              <span className="kpi-label">Carbon Hotspots</span>
+              <ConceptTooltip
+                conceptId="hotspot"
+                label="Carbon Hotspot Thresholds"
+                tooltipText="Suppliers or material nodes exceeding threshold limits (High ≥ 20%, Medium ≥ 5%) requiring targeted decarbonization."
+                onOpenGuide={onOpenGuide}
+              />
+            </div>
             <span className="kpi-icon">🔥</span>
           </div>
           <div className="kpi-value-wrap">
@@ -173,7 +240,15 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
         {/* KPI 8: Potential Reduction */}
         <div className="kpi-card decarbon-card">
           <div className="kpi-header">
-            <span className="kpi-label">Decarbonization Potential</span>
+            <div className="kpi-title-wrap">
+              <span className="kpi-label">Decarbonization Potential</span>
+              <ConceptTooltip
+                conceptId="emission-factor"
+                label="Decarbonization Interventions"
+                tooltipText="Estimated potential emission reduction achievable by adopting renewable energy, recycling, and low-carbon materials across hotspots."
+                onOpenGuide={onOpenGuide}
+              />
+            </div>
             <span className="kpi-icon">🌱</span>
           </div>
           <div className="kpi-value-wrap">
@@ -190,3 +265,4 @@ export default function KPIGrid({ dashboardData, hotspotsData }) {
     </section>
   );
 }
+

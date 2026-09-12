@@ -48,6 +48,12 @@ from .report_views import (
     ReportPDFView,
     ReportListView,
 )
+from .ml_views import (
+    MLPredictView,
+    MLModelInfoView,
+    MLBatchPredictView,
+    MLDataGapsView,
+)
 
 router = DefaultRouter()
 router.register(r'suppliers', SupplierViewSet, basename='supplier')
@@ -93,6 +99,14 @@ urlpatterns = [
     path('reports/generate/', ReportGenerateView.as_view(), name='reports-generate'),
     path('reports/pdf/', ReportPDFView.as_view(), name='reports-pdf'),
     path('reports/list/', ReportListView.as_view(), name='reports-list'),
+
+    # Machine Learning Estimation Endpoints (Phase 19 & 20)
+    path('ml/predict/', MLPredictView.as_view(), name='ml-predict'),
+    path('ml/estimate/', MLPredictView.as_view(), name='ml-estimate'),
+    path('ml/status/', MLModelInfoView.as_view(), name='ml-status'),
+    path('ml/info/', MLModelInfoView.as_view(), name='ml-info'),
+    path('ml/data-gaps/', MLDataGapsView.as_view(), name='ml-data-gaps'),
+    path('ml/batch-predict/', MLBatchPredictView.as_view(), name='ml-batch-predict'),
 
     # Multi-Tier Carbon Aggregation & Analytics Endpoints (Phase 11)
     path('analytics/emissions/total/', TotalEmissionsView.as_view(), name='analytics-emissions-total'),

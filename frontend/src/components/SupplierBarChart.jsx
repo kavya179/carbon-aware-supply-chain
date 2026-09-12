@@ -1,6 +1,7 @@
 import React from 'react';
+import ConceptTooltip from './ConceptTooltip';
 
-export default function SupplierBarChart({ suppliers = [], totalCompanyTonnes = 0 }) {
+export default function SupplierBarChart({ suppliers = [], totalCompanyTonnes = 0, onOpenGuide }) {
   const topList = suppliers.slice(0, 6);
   const maxTonnes = topList.length > 0 ? Math.max(...topList.map(s => s.total_emissions_tonnes || 0)) : 1;
 
@@ -8,7 +9,15 @@ export default function SupplierBarChart({ suppliers = [], totalCompanyTonnes = 
     <div className="card chart-card">
       <div className="chart-header">
         <div>
-          <h3 className="chart-title">Emissions by Key Supplier</h3>
+          <div className="title-with-tooltip">
+            <h3 className="chart-title">Emissions by Key Supplier</h3>
+            <ConceptTooltip
+              conceptId="hotspot"
+              label="Supplier Carbon Footprint"
+              tooltipText="Ranked carbon contribution by supplier. High share suppliers represent primary decarbonization engagement opportunities."
+              onOpenGuide={onOpenGuide}
+            />
+          </div>
           <p className="chart-subtitle">Rank-ordered carbon contribution across supply chain partners</p>
         </div>
         <span className="unit-badge">Unit: tCO₂e / % Share</span>

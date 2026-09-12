@@ -1,6 +1,7 @@
 import React from 'react';
+import ConceptTooltip from './ConceptTooltip';
 
-export default function ActivityBreakdown({ activities = [], totalTonnes = 0 }) {
+export default function ActivityBreakdown({ activities = [], totalTonnes = 0, onOpenGuide }) {
   const activityIcons = {
     'MATERIAL': '📦',
     'ELECTRICITY': '⚡',
@@ -21,7 +22,15 @@ export default function ActivityBreakdown({ activities = [], totalTonnes = 0 }) 
     <div className="card chart-card">
       <div className="chart-header">
         <div>
-          <h3 className="chart-title">Emissions by Operational Activity</h3>
+          <div className="title-with-tooltip">
+            <h3 className="chart-title">Emissions by Operational Activity</h3>
+            <ConceptTooltip
+              conceptId="emission-factor"
+              label="Activity-Based Accounting"
+              tooltipText="Emissions categorized by activity: Materials (embodied), Electricity (purchased), Fuel (combustion), and Logistics."
+              onOpenGuide={onOpenGuide}
+            />
+          </div>
           <p className="chart-subtitle">GHG Protocol Scope 3 activity-level carbon breakdown</p>
         </div>
         <span className="unit-badge">Unit: tCO₂e</span>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import ConceptTooltip from './ConceptTooltip';
 
-export default function HotspotsTable({ suppliers = [], onSyncHotspots, isSyncing }) {
+export default function HotspotsTable({ suppliers = [], onSyncHotspots, isSyncing, onOpenGuide }) {
   const [filterSeverity, setFilterSeverity] = useState('ALL');
   const [expandedId, setExpandedId] = useState(null);
 
@@ -13,7 +14,15 @@ export default function HotspotsTable({ suppliers = [], onSyncHotspots, isSyncin
     <div className="card chart-card">
       <div className="chart-header flex-between">
         <div>
-          <h3 className="chart-title">Hotspot Intelligence & Action Registry</h3>
+          <div className="title-with-tooltip">
+            <h3 className="chart-title">Hotspot Intelligence & Action Registry</h3>
+            <ConceptTooltip
+              conceptId="hotspot"
+              label="Hotspot Classification"
+              tooltipText="Hotspots are suppliers or processes with high contribution to total footprint (High ≥ 20%, Medium ≥ 5%)."
+              onOpenGuide={onOpenGuide}
+            />
+          </div>
           <p className="chart-subtitle">Rule-based explainability identifying carbon-dense entities requiring mitigation</p>
         </div>
 

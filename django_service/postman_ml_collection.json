@@ -1,0 +1,156 @@
+{
+  "info": {
+    "_postman_id": "c6a88678-fee3-43a5-8acb-5609cb5e75a6",
+    "name": "Carbon Scope 3 — ML Prediction & Estimation API",
+    "description": "Postman Test Collection for Phase 19: Django REST Framework ML Prediction and Gap-Filling Endpoints.\n\nKey Principles:\n- Rule-based engine remains primary\n- All ML predictions labeled ML_ESTIMATED\n- Verified supplier data is protected from overwrite",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. ML Service Status & Model Info",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/ml/status/",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["api", "ml", "status", ""]
+        },
+        "description": "Checks ML model readiness, architecture (RandomForestRegressor), R2 score (0.9906), MAE (1,907.96 kg), and feature list."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Predict Scope 3 Emissions (Full Profile)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"industry_sector\": \"Automotive Manufacturing\",\n  \"supplier_tier\": 1,\n  \"country\": \"Germany\",\n  \"energy_kwh_monthly\": 15000,\n  \"renewable_energy_pct\": 50,\n  \"transport_mode\": \"road_diesel\",\n  \"distance_km\": 600,\n  \"shipment_weight_t\": 5,\n  \"material_type\": \"aluminum_primary\",\n  \"material_qty_kg\": 10000\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/ml/predict/",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["api", "ml", "predict", ""]
+        },
+        "description": "Generates Scope 3 carbon emission prediction with high confidence for a complete supplier activity profile."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Predict Scope 3 Emissions (Gap Filling / Partial Data)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"industry_sector\": \"Steel & Metals\",\n  \"supplier_tier\": 2,\n  \"material_type\": \"steel\",\n  \"material_qty_kg\": 25000\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/ml/predict/",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["api", "ml", "predict", ""]
+        },
+        "description": "Demonstrates automatic feature imputation and gap-filling when energy or transport data is missing."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Predict with Verified Supplier Protection",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"supplier_id\": 8,\n  \"industry_sector\": \"Mining & Raw Materials\",\n  \"material_type\": \"lithium_carbonate\",\n  \"material_qty_kg\": 5000\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/ml/predict/",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["api", "ml", "predict", ""]
+        },
+        "description": "Demonstrates that verified supplier records are detected and protected from overwrite."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Invalid Input Validation (Error Handling)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"energy_kwh_monthly\": -500,\n  \"renewable_energy_pct\": 180\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/ml/predict/",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["api", "ml", "predict", ""]
+        },
+        "description": "Returns 400 Bad Request with field-level validation errors for out-of-bound inputs."
+      },
+      "response": []
+    },
+    {
+      "name": "6. Batch Prediction Endpoint",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"records\": [\n    {\n      \"industry_sector\": \"Food Processing\",\n      \"supplier_tier\": 3,\n      \"material_type\": \"organic_grain\",\n      \"material_qty_kg\": 12000\n    },\n    {\n      \"industry_sector\": \"Semiconductor Fabrication\",\n      \"supplier_tier\": 2,\n      \"energy_kwh_monthly\": 18000,\n      \"renewable_energy_pct\": 30\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/ml/batch-predict/",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["api", "ml", "batch-predict", ""]
+        },
+        "description": "Performs batch estimation across multiple supplier activities in a single payload."
+      },
+      "response": []
+    }
+  ]
+}

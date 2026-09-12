@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import ConceptTooltip from './ConceptTooltip';
 
-export default function TierDonutChart({ tiers = [], totalTonnes = 0 }) {
+export default function TierDonutChart({ tiers = [], totalTonnes = 0, onOpenGuide }) {
   const [activeTier, setActiveTier] = useState(null);
 
   const colors = {
@@ -47,7 +48,15 @@ export default function TierDonutChart({ tiers = [], totalTonnes = 0 }) {
     <div className="card chart-card">
       <div className="chart-header">
         <div>
-          <h3 className="chart-title">Emissions by Supply Chain Tier</h3>
+          <div className="title-with-tooltip">
+            <h3 className="chart-title">Emissions by Supply Chain Tier</h3>
+            <ConceptTooltip
+              conceptId="tiers"
+              label="Tier Breakdown"
+              tooltipText="Tier 1 = Direct Suppliers, Tier 2 = Subcontractors & Parts, Tier 3 = Raw Material & Smelting."
+              onOpenGuide={onOpenGuide}
+            />
+          </div>
           <p className="chart-subtitle">Scope 3 breakdown across direct & sub-tier tiers</p>
         </div>
         <span className="unit-badge">Unit: tCO₂e</span>

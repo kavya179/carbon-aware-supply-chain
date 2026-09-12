@@ -1,0 +1,176 @@
+{
+  "total_tests": 24,
+  "passed": 24,
+  "failed": 0,
+  "pass_rate_pct": 100.0,
+  "results": [
+    {
+      "test_num": 1,
+      "name": "Authentication & Login (Manager)",
+      "status": "PASS",
+      "details": "HTTP 200, tokens received",
+      "duration_ms": 1129.61
+    },
+    {
+      "test_num": 2,
+      "name": "Role-Based Access Control",
+      "status": "PASS",
+      "details": "Auditor HTTP 200, Supplier HTTP 200",
+      "duration_ms": 273.63
+    },
+    {
+      "test_num": 3,
+      "name": "Supplier Creation",
+      "status": "PASS",
+      "details": "HTTP 201, id=14, code=SUP-TEST-53037",
+      "duration_ms": 109.39
+    },
+    {
+      "test_num": 4,
+      "name": "Tier 1 Emissions Aggregation",
+      "status": "PASS",
+      "details": "Tier 1: 801.73 tCO2e",
+      "duration_ms": 84.81
+    },
+    {
+      "test_num": 5,
+      "name": "Tier 2 Emissions Aggregation",
+      "status": "PASS",
+      "details": "Tier 2: 0.00 tCO2e",
+      "duration_ms": 84.85
+    },
+    {
+      "test_num": 6,
+      "name": "Tier 3 Emissions Aggregation",
+      "status": "PASS",
+      "details": "Tier 3: 6,025.69 tCO2e",
+      "duration_ms": 84.87
+    },
+    {
+      "test_num": 7,
+      "name": "Supplier Relationships & Hierarchy Graph",
+      "status": "PASS",
+      "details": "HTTP 200, multi-tier tree verified",
+      "duration_ms": 25.28
+    },
+    {
+      "test_num": 8,
+      "name": "Manual Activity Data Entry",
+      "status": "PASS",
+      "details": "HTTP 201, activity_id=37",
+      "duration_ms": 52.83
+    },
+    {
+      "test_num": 9,
+      "name": "CSV Activity Data Upload",
+      "status": "PASS",
+      "details": "HTTP 200, imported=3 rows",
+      "duration_ms": 96.54
+    },
+    {
+      "test_num": 10,
+      "name": "CSV Validation & Invalid Column Handling",
+      "status": "PASS",
+      "details": "HTTP 400, correctly handled invalid format",
+      "duration_ms": 20.75
+    },
+    {
+      "test_num": 11,
+      "name": "Carbon Calculation Engine",
+      "status": "PASS",
+      "details": "HTTP 200, sample formula='Energy Consumption (520000.7500 kWh) \u00d7 0.436000 kg CO2e/kWh = 226720.3270 kg CO2e (226.720327 tCO2e)', co2e=226.720327 t",
+      "duration_ms": 118.42
+    },
+    {
+      "test_num": 12,
+      "name": "Multi-Tier Aggregation (Zero Double Counting)",
+      "status": "PASS",
+      "details": "Total=0.00 tCO2e, Sum(Tiers)=6,827.42 tCO2e",
+      "duration_ms": 29.19
+    },
+    {
+      "test_num": 13,
+      "name": "Hotspot Detection (Multi-Dimensional)",
+      "status": "PASS",
+      "details": "HTTP 200, detected 0 hotspots",
+      "duration_ms": 31.75
+    },
+    {
+      "test_num": 14,
+      "name": "Circular & Decarbonization Recommendations",
+      "status": "PASS",
+      "details": "HTTP 200, 12 active interventions",
+      "duration_ms": 31.02
+    },
+    {
+      "test_num": 15,
+      "name": "Compliance Audit Trail (SQLite Immutability)",
+      "status": "PASS",
+      "details": "HTTP 200, 177 audit records in SQLite",
+      "duration_ms": 277.99
+    },
+    {
+      "test_num": 16,
+      "name": "Carbon Reporting (Structured JSON & PDF)",
+      "status": "PASS",
+      "details": "JSON HTTP 200, PDF HTTP 200, Total=6827.4191 tCO2e",
+      "duration_ms": 770.21
+    },
+    {
+      "test_num": 17,
+      "name": "Machine Learning Prediction (ML_ESTIMATED)",
+      "status": "PASS",
+      "details": "HTTP 200, Pred=47.0618 tCO2e, Confidence=HIGH",
+      "duration_ms": 568.7
+    },
+    {
+      "test_num": 18,
+      "name": "Master Sustainability Dashboard KPIs",
+      "status": "PASS",
+      "details": "HTTP 200, Total CO2e=6827.41915 t, Suppliers=None",
+      "duration_ms": 34.98
+    },
+    {
+      "test_num": 19,
+      "name": "Security: Unauthorized Access Rejection",
+      "status": "PASS",
+      "details": "HTTP 401 correctly denied access without Bearer token",
+      "duration_ms": 6.56
+    },
+    {
+      "test_num": 20,
+      "name": "Input Validation & 400 Bad Request Handling",
+      "status": "PASS",
+      "details": "HTTP 400, validation caught ['energy_kwh_monthly', 'renewable_energy_pct']",
+      "duration_ms": 13.69
+    },
+    {
+      "test_num": 21,
+      "name": "Empty Dataset & Non-Existent Period Handling",
+      "status": "PASS",
+      "details": "HTTP 200, returned clean zeroed structure without 500 error",
+      "duration_ms": 27.23
+    },
+    {
+      "test_num": 22,
+      "name": "Duplicate Data Rejection (Unique Constraints)",
+      "status": "PASS",
+      "details": "HTTP 400 correctly prevented duplicate supplier_code='SUP-TEST-53037'",
+      "duration_ms": 17.42
+    },
+    {
+      "test_num": 23,
+      "name": "Out-of-Bounds & Negative Data Rejection",
+      "status": "PASS",
+      "details": "HTTP 400 rejected negative activity quantity",
+      "duration_ms": 17.29
+    },
+    {
+      "test_num": 24,
+      "name": "Full Gateway Pipeline & Health Check",
+      "status": "PASS",
+      "details": "HTTP 200, Node=ok, Django=ok",
+      "duration_ms": 8.29
+    }
+  ]
+}

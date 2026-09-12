@@ -1,0 +1,53 @@
+{
+  "status": "ready",
+  "dataset_rows": 2000,
+  "train_rows": 1600,
+  "test_rows": 400,
+  "test_split_ratio": 0.2,
+  "features": [
+    "supplier_tier",
+    "grid_emission_factor",
+    "renewable_energy_pct",
+    "energy_kwh_monthly",
+    "fuel_litres_monthly",
+    "production_qty_units",
+    "distance_km",
+    "shipment_weight_t",
+    "material_qty_kg",
+    "material_ef_kgco2e_kg",
+    "transport_ef_kgco2e_tonne_km",
+    "energy_emission_intensity",
+    "adj_grid_factor",
+    "transport_proxy",
+    "material_proxy",
+    "industry_sector_enc",
+    "country_enc",
+    "transport_mode_enc",
+    "material_type_enc"
+  ],
+  "target": "co2e_kg",
+  "missing_summary": {
+    "renewable_energy_pct": 167,
+    "fuel_litres_monthly": 112,
+    "distance_km": 74
+  },
+  "categorical_columns": [
+    "industry_sector",
+    "country",
+    "transport_mode",
+    "material_type"
+  ],
+  "numerical_columns": [
+    "supplier_tier",
+    "grid_emission_factor",
+    "renewable_energy_pct",
+    "energy_kwh_monthly",
+    "fuel_litres_monthly",
+    "production_qty_units",
+    "distance_km",
+    "shipment_weight_t",
+    "material_qty_kg",
+    "material_ef_kgco2e_kg",
+    "transport_ef_kgco2e_tonne_km"
+  ]
+}

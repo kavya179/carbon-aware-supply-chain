@@ -1,0 +1,96 @@
+{
+  "provenance": {
+    "source_type": "SYNTHETIC",
+    "notice": "All records are parametrically generated synthetic scenarios. Emission factors are derived from DEFRA 2023, EPA eGrid 2023, IPCC AR6, and GHG Protocol reference databases. This dataset must NOT be used to report actual supplier emissions.",
+    "emission_factor_sources": [
+      "DEFRA 2023 Greenhouse Gas Conversion Factors",
+      "US EPA eGrid 2023",
+      "IPCC AR6 Working Group III (2022)",
+      "World Steel Association 2023 LCA Data",
+      "International Aluminium Institute 2023"
+    ],
+    "random_seed": 42
+  },
+  "schema": {
+    "record_id": "Unique row identifier",
+    "source_type": "Data provenance label: always SYNTHETIC",
+    "supplier_tier": "Supply chain tier: 1 (direct), 2 (sub), 3 (raw material)",
+    "industry_sector": "Supplier industry sector (categorical)",
+    "country": "Supplier country (categorical)",
+    "country_iso3": "ISO 3166-1 alpha-3 country code",
+    "grid_emission_factor": "National grid emission factor (kg CO2e/kWh) [REFERENCE]",
+    "renewable_energy_pct": "% of energy from renewable sources (may be NaN)",
+    "energy_kwh_monthly": "Monthly energy consumption (kWh) [SYNTHETIC]",
+    "fuel_litres_monthly": "Monthly on-site diesel consumption (L) (may be NaN) [SYNTHETIC]",
+    "production_qty_units": "Monthly production output (units/tonnes) [SYNTHETIC]",
+    "transport_mode": "Primary inbound/outbound transport mode (categorical)",
+    "distance_km": "Shipping distance (km) (may be NaN) [SYNTHETIC]",
+    "shipment_weight_t": "Shipment weight (tonnes) [SYNTHETIC]",
+    "material_type": "Primary input material (categorical)",
+    "material_qty_kg": "Monthly material consumption (kg) [SYNTHETIC]",
+    "material_ef_kgco2e_kg": "Material emission factor used (kg CO2e/kg) [REFERENCE]",
+    "transport_ef_kgco2e_tonne_km": "Transport emission factor used [REFERENCE]",
+    "energy_co2e_kg": "Energy emission component (kg CO2e) [DERIVED]",
+    "fuel_co2e_kg": "Fuel combustion component (kg CO2e) [DERIVED]",
+    "material_co2e_kg": "Material upstream component (kg CO2e) [DERIVED]",
+    "transport_co2e_kg": "Transport component (kg CO2e) [DERIVED]",
+    "co2e_kg": "TARGET \u00e2\u20ac\u201d total Scope 3 emissions (kg CO2e) [DERIVED]"
+  },
+  "statistics": {
+    "total_records": 2000,
+    "tier_distribution": {
+      "2": 800,
+      "3": 600,
+      "1": 600
+    },
+    "sector_distribution": {
+      "Agricultural Commodities": 148,
+      "Renewable Energy Components": 141,
+      "Packaging Materials": 141,
+      "Textiles & Apparel": 139,
+      "Logistics & Freight": 136,
+      "Pharmaceutical Manufacturing": 133,
+      "Semiconductor Fabrication": 133,
+      "Steel & Metals": 132,
+      "Chemical Processing": 132,
+      "Plastics Manufacturing": 132,
+      "Construction Materials": 131,
+      "Mining & Raw Materials": 130,
+      "Food Processing": 125,
+      "Automotive Manufacturing": 125,
+      "Electronics Assembly": 122
+    },
+    "missing_value_counts": {
+      "record_id": 0,
+      "source_type": 0,
+      "supplier_tier": 0,
+      "industry_sector": 0,
+      "country": 0,
+      "country_iso3": 0,
+      "grid_emission_factor": 0,
+      "renewable_energy_pct": 167,
+      "energy_kwh_monthly": 0,
+      "fuel_litres_monthly": 112,
+      "production_qty_units": 0,
+      "transport_mode": 0,
+      "distance_km": 74,
+      "shipment_weight_t": 0,
+      "material_type": 0,
+      "material_qty_kg": 0,
+      "material_ef_kgco2e_kg": 0,
+      "transport_ef_kgco2e_tonne_km": 0,
+      "energy_co2e_kg": 0,
+      "fuel_co2e_kg": 0,
+      "material_co2e_kg": 0,
+      "transport_co2e_kg": 0,
+      "co2e_kg": 0
+    },
+    "target_co2e_kg": {
+      "min": 377.98,
+      "max": 1189131.84,
+      "mean": 27864.32,
+      "median": 14347.91,
+      "std": 73658.89
+    }
+  }
+}

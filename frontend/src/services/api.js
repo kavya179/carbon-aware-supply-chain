@@ -1,10 +1,15 @@
 /**
  * API Service for Carbon-Aware Supply Chain Dashboard
- * Connects React frontend directly to Django REST Framework (Port 8000)
- * and Node.js Gateway (Port 5000) on SQLite.
+ * Architecture Pipeline:
+ * React (Port 5173) -> Node.js Express Gateway (Port 5000) -> Django REST Framework (Port 8000) -> SQLite / ML Model
  */
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const NODE_GATEWAY_URL = 'http://127.0.0.1:5000/api';
+const DJANGO_DIRECT_URL = 'http://127.0.0.1:8000/api';
+
+// Primary route through Node.js Express API Gateway
+let API_BASE_URL = NODE_GATEWAY_URL;
+
 const DEFAULT_CREDENTIALS = {
   username: 'mgr_apex',
   password: 'SecurePass123!'
@@ -22,7 +27,7 @@ export const authService = {
       cachedToken = stored;
       return stored;
     }
-    // Auto-authenticate as Apex Motors Manager
+    // Auto-authenticate
     return await this.login(DEFAULT_CREDENTIALS.username, DEFAULT_CREDENTIALS.password);
   },
 
@@ -46,7 +51,27 @@ export const authService = {
       }
       throw new Error('No access token returned');
     } catch (err) {
-      console.error('[AUTH ERROR]', err);
+      console.warn('[AUTH THROUGH NODE GATEWAY FAILED, TRYING DJANGO DIRECT]', err);
+      // Fallback to direct Django if gateway is starting up
+      try {
+        const resDirect = await fetch(`${DJANGO_DIRECT_URL}/auth/login/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        if (resDirect.ok) {
+          const dataDirect = await resDirect.json();
+          const token = dataDirect.tokens?.access;
+          if (token) {
+            cachedToken = token;
+            localStorage.setItem('access_token', token);
+            localStorage.setItem('user_profile', JSON.stringify(dataDirect.user));
+            return token;
+          }
+        }
+      } catch (directErr) {
+        console.error('[AUTH DIRECT FAILED]', directErr);
+      }
       throw err;
     }
   },
@@ -71,32 +96,50 @@ async function apiRequest(endpoint, options = {}) {
   const headers = {
     'Accept': 'application/json',
     'Authorization': `Bearer ${token}`,
-    ...(options.headers || {})
+    ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+    ...(options.headers || {}),
   };
 
-  let res = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers
-  });
-
-  // If unauthorized, attempt re-login once
-  if (res.status === 401) {
-    localStorage.removeItem('access_token');
-    cachedToken = null;
-    const newToken = await authService.getValidToken();
-    headers['Authorization'] = `Bearer ${newToken}`;
-    res = await fetch(`${API_BASE_URL}${endpoint}`, {
+  try {
+    let res = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
       headers
     });
-  }
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`API Error ${res.status}: ${errorText || res.statusText}`);
-  }
+    // If unauthorized, attempt re-login once
+    if (res.status === 401) {
+      localStorage.removeItem('access_token');
+      cachedToken = null;
+      const newToken = await authService.getValidToken();
+      headers['Authorization'] = `Bearer ${newToken}`;
+      res = await fetch(`${API_BASE_URL}${endpoint}`, {
+        ...options,
+        headers
+      });
+    }
 
-  return await res.json();
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`API Error ${res.status}: ${errorText || res.statusText}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    // If Node.js gateway is temporarily unreachable, fallback to direct Django
+    if (API_BASE_URL !== DJANGO_DIRECT_URL && err.message.includes('Failed to fetch')) {
+      console.warn(`[GATEWAY FALLBACK] Routing request to Django direct: ${endpoint}`);
+      let resFallback = await fetch(`${DJANGO_DIRECT_URL}${endpoint}`, {
+        ...options,
+        headers
+      });
+      if (!resFallback.ok) {
+        const errorText = await resFallback.text();
+        throw new Error(`API Error ${resFallback.status}: ${errorText || resFallback.statusText}`);
+      }
+      return await resFallback.json();
+    }
+    throw err;
+  }
 }
 
 export const carbonApi = {
@@ -204,4 +247,42 @@ export const carbonApi = {
     if (period) return `${base}?period=${encodeURIComponent(period)}`;
     return base;
   },
+
+  // ── Machine Learning & Gap-Filling Endpoints (Phase 18, 19, 20) ────────────
+
+  // Check ML model status, benchmarks, and feature weights
+  async getMLStatus() {
+    return await apiRequest('/ml/status/');
+  },
+
+  // Detect missing activity streams across all suppliers in SQLite
+  async getMLDataGaps() {
+    return await apiRequest('/ml/data-gaps/');
+  },
+
+  // Run ML Scope 3 emission estimation for gap-filling
+  async predictMLEmissions(payload) {
+    return await apiRequest('/ml/predict/', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  // Batch ML estimation
+  async batchPredictMLEmissions(records) {
+    return await apiRequest('/ml/batch-predict/', {
+      method: 'POST',
+      body: JSON.stringify({ records }),
+    });
+  },
+
+  // Gateway health verification
+  async getGatewayHealth() {
+    try {
+      const res = await fetch('http://127.0.0.1:5000/api/health');
+      if (res.ok) return await res.json();
+    } catch {
+      return { status: 'gateway_offline' };
+    }
+  }
 };

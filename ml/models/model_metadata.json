@@ -1,0 +1,109 @@
+{
+  "model_name": "RandomForestRegressor",
+  "purpose": "Estimation of missing Scope 3 supplier and activity carbon emissions",
+  "target_variable": "co2e_kg",
+  "target_transformation": "log1p(co2e_kg) during training, expm1(y_pred) at inference",
+  "target_units": "kg CO2e",
+  "features": [
+    "supplier_tier",
+    "grid_emission_factor",
+    "renewable_energy_pct",
+    "energy_kwh_monthly",
+    "fuel_litres_monthly",
+    "production_qty_units",
+    "distance_km",
+    "shipment_weight_t",
+    "material_qty_kg",
+    "material_ef_kgco2e_kg",
+    "transport_ef_kgco2e_tonne_km",
+    "energy_emission_intensity",
+    "adj_grid_factor",
+    "transport_proxy",
+    "material_proxy",
+    "industry_sector_enc",
+    "country_enc",
+    "transport_mode_enc",
+    "material_type_enc"
+  ],
+  "categorical_features": [
+    "industry_sector",
+    "country",
+    "transport_mode",
+    "material_type"
+  ],
+  "numerical_features": [
+    "supplier_tier",
+    "grid_emission_factor",
+    "renewable_energy_pct",
+    "energy_kwh_monthly",
+    "fuel_litres_monthly",
+    "production_qty_units",
+    "distance_km",
+    "shipment_weight_t",
+    "material_qty_kg",
+    "material_ef_kgco2e_kg",
+    "transport_ef_kgco2e_tonne_km"
+  ],
+  "engineered_features": [
+    "energy_emission_intensity",
+    "adj_grid_factor",
+    "transport_proxy",
+    "material_proxy"
+  ],
+  "dataset_summary": {
+    "total_samples": 2000,
+    "train_samples": 1600,
+    "test_samples": 400,
+    "train_test_split": "80/20",
+    "random_seed": 42,
+    "data_provenance": "SYNTHETIC training dataset generated using DEFRA 2023, EPA eGrid 2023, and IPCC AR6 reference emission factors."
+  },
+  "evaluation_metrics": {
+    "test_r2_score": 0.9906,
+    "test_mae_kg": 1907.96,
+    "test_rmse_kg": 7158.17,
+    "test_mape_pct": 7.25,
+    "cv_5fold_r2_mean": 0.9823,
+    "cv_5fold_r2_std": 0.0044,
+    "cv_5fold_mae_mean": 0.0821
+  },
+  "benchmark_comparison": {
+    "RandomForestRegressor": {
+      "test_r2": 0.9906,
+      "test_mae_kg": 1907.96,
+      "test_rmse_kg": 7158.17,
+      "test_mape_pct": 7.25,
+      "cv_5fold_r2": 0.9823
+    },
+    "GradientBoostingRegressor": {
+      "test_r2": 0.993,
+      "test_mae_kg": 1640.68,
+      "test_rmse_kg": 6169.02,
+      "test_mape_pct": 5.96,
+      "cv_5fold_r2": 0.988
+    },
+    "Ridge": {
+      "test_r2": -1.4384,
+      "test_mae_kg": 19826.01,
+      "test_rmse_kg": 115514.33,
+      "test_mape_pct": 51.37,
+      "cv_5fold_r2": 0.6557
+    }
+  },
+  "hyperparameters": {
+    "n_estimators": 150,
+    "max_depth": 16,
+    "min_samples_split": 4,
+    "min_samples_leaf": 2,
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "governance_and_limitations": {
+    "primary_engine_rule": "The rule-based CarbonCalculationEngine is the PRIMARY and authoritative calculation system.",
+    "ml_role": "ML predictions are supplementary estimates used ONLY when activity data is missing or incomplete.",
+    "data_labeling": "All predictions from this model MUST be explicitly tagged with source='ML_ESTIMATED'.",
+    "synthetic_data_disclosure": "Trained on synthetic activity datasets calibrated to IPCC/DEFRA/EPA emission factors. Not direct empirical supplier measurements.",
+    "accuracy_boundary": "High accuracy applies within standard industrial activity ranges. Extreme outlier facilities should be audited with primary supplier bills."
+  },
+  "trained_at": "2026-09-12 16:12:59 UTC"
+}
