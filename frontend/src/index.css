@@ -1,181 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 :root {
-  /* Enterprise SaaS Light Theme Colors */
-  --bg-primary: #f8fafc; /* Very light slate */
-  --bg-secondary: #ffffff; /* Pure white */
-  
-  --text-primary: #0f172a; /* Slate 900 */
-  --text-secondary: #475569; /* Slate 600 */
-  --text-muted: #94a3b8; /* Slate 400 */
-  
-  --border-color: #e2e8f0; /* Slate 200 */
-  
-  /* Brand Colors */
-  --brand-green: #10b981; /* Emerald 500 */
-  --brand-green-hover: #059669; /* Emerald 600 */
-  --brand-green-light: #d1fae5; /* Emerald 100 */
-  
-  --brand-blue: #2563eb; /* Blue 600 */
-  --brand-blue-hover: #1d4ed8; /* Blue 700 */
-  
-  /* Status Colors */
-  --status-red: #ef4444; /* Red 500 */
-  --status-red-bg: #fee2e2; /* Red 100 */
-  --status-yellow: #f59e0b; /* Amber 500 */
-  --status-yellow-bg: #fef3c7; /* Amber 100 */
-  
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Outfit', 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* === BACKGROUND PALETTE — LIGHT === */
+  --bg-primary: #f4faf6;
+  --bg-secondary: #edf7f1;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f7fdf9;
+  --bg-input: #f0f8f3;
+  --bg-glass: rgba(255, 255, 255, 0.8);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --bg-subtle: #e8f5ec;
+
+  /* === BORDERS === */
+  --border-color: rgba(16, 185, 129, 0.15);
+  --border-subtle: rgba(16, 185, 129, 0.08);
+  --border-hover: rgba(5, 150, 105, 0.35);
+  --border-active: rgba(5, 150, 105, 0.5);
+  --border-light: rgba(0, 0, 0, 0.06);
+
+  /* === TEXT === */
+  --text-primary: #0f2017;
+  --text-secondary: #2d5a3d;
+  --text-muted: #5a8a6a;
+  --text-dim: #9dc4a8;
+
+  /* === EMERALD / GREEN — PRIMARY BRAND === */
+  --color-emerald: #059669;
+  --color-emerald-light: #10b981;
+  --color-emerald-bright: #34d399;
+  --color-emerald-pale: #d1fae5;
+  --color-emerald-dim: rgba(16, 185, 129, 0.1);
+  --color-emerald-glow: rgba(5, 150, 105, 0.18);
+
+  /* === TEAL === */
+  --color-teal: #0d9488;
+  --color-teal-light: #14b8a6;
+  --color-teal-dim: rgba(13, 148, 136, 0.1);
+
+  /* === BLUE === */
+  --color-blue: #2563eb;
+  --color-blue-light: #3b82f6;
+  --color-blue-bright: #60a5fa;
+  --color-blue-dim: rgba(37, 99, 235, 0.08);
+  --color-blue-pale: #dbeafe;
+
+  /* === CYAN === */
+  --color-cyan: #0891b2;
+  --color-cyan-light: #06b6d4;
+  --color-cyan-dim: rgba(8, 145, 178, 0.1);
+
+  /* === VIOLET === */
+  --color-violet: #7c3aed;
+  --color-violet-light: #8b5cf6;
+  --color-violet-dim: rgba(124, 58, 237, 0.08);
+  --color-violet-pale: #ede9fe;
+
+  /* === AMBER === */
+  --color-amber: #d97706;
+  --color-amber-light: #f59e0b;
+  --color-amber-dim: rgba(217, 119, 6, 0.1);
+  --color-amber-pale: #fef3c7;
+
+  /* === ROSE / RED === */
+  --color-rose: #dc2626;
+  --color-rose-light: #ef4444;
+  --color-rose-dim: rgba(220, 38, 38, 0.08);
+  --color-rose-pale: #fee2e2;
+
+  /* === RADII === */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+
+  /* === SHADOWS — SOFT FOR LIGHT THEME === */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-green: 0 4px 20px rgba(5, 150, 105, 0.15), 0 2px 8px rgba(5, 150, 105, 0.08);
+  --shadow-green-lg: 0 8px 32px rgba(5, 150, 105, 0.2), 0 4px 12px rgba(5, 150, 105, 0.1);
+  --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --shadow-inner-border: inset 0 0 0 1px rgba(16, 185, 129, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  padding: 0;
+  font-family: var(--font-family);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-family);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  font-size: 14px;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  line-height: 1.2;
   color: var(--text-primary);
+}
+
+button, input, select, textarea {
+  font-family: inherit;
 }
 
 a {
+  color: var(--color-emerald);
   text-decoration: none;
-  color: var(--brand-blue);
 }
 
-/* Layout */
-.dashboard-layout {
-  display: flex;
-  min-height: 100vh;
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.main-content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  margin-left: 240px; /* Sidebar width */
-  transition: margin-left 0.3s ease;
-}
-.main-content.collapsed {
-  margin-left: 70px;
-}
-
-.page-content {
-  padding: 2rem;
-  flex-grow: 1;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Header */
-.header {
-  height: 64px;
+::-webkit-scrollbar-track {
   background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  padding: 0 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.header-title {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: var(--text-primary);
 }
 
-/* Page Header */
-.page-header {
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.page-title {
-  font-size: 1.75rem;
-  margin-bottom: 0.25rem;
-}
-.page-subtitle {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin: 0;
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.25);
+  border-radius: 3px;
 }
 
-/* Base Card */
-.card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-.card-title {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border-color);
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(5, 150, 105, 0.4);
 }
 
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-}
-.btn--primary {
-  background-color: var(--brand-blue);
-  color: white;
-}
-.btn--primary:hover {
-  background-color: var(--brand-blue-hover);
-}
-.btn--outline {
-  background-color: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-}
-.btn--outline:hover {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-}
-
-/* Forms */
-.form-input, .form-select {
-  width: 100%;
-  padding: 0.6rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  color: var(--text-primary);
-  font-family: inherit;
-  font-size: 0.9rem;
-  box-sizing: border-box;
-  transition: border-color 0.2s;
-}
-.form-input:focus, .form-select:focus {
-  outline: none;
-  border-color: var(--brand-blue);
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
-}
-.form-group label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: 0.4rem;
+::selection {
+  background: var(--color-emerald-pale);
+  color: var(--color-emerald);
 }
