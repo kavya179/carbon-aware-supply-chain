@@ -9,9 +9,7 @@ import SuppliersView from './components/SuppliersView';
 import SupplyChainNetwork from './components/SupplyChainNetwork';
 import DataUploadView from './components/DataUploadView';
 import CarbonCalculationView from './components/CarbonCalculationView';
-import HotspotsTable from './components/HotspotsTable';
-import MaterialHotspots from './components/MaterialHotspots';
-import TransportHotspots from './components/TransportHotspots';
+import HotspotsView from './components/HotspotsView';
 import RecommendationsPanel from './components/RecommendationsPanel';
 import ReportingPanel from './components/ReportingPanel';
 import AuditTrailPanel from './components/AuditTrailPanel';
@@ -257,15 +255,7 @@ export default function App() {
 
               {/* TAB 3: SUPPLY CHAIN NETWORK */}
               {activeTab === 'network' && (
-                <div className="view-container">
-                  <div className="view-header">
-                    <div>
-                      <h2 className="view-title">Multi-Tier Supply Chain Network</h2>
-                      <p className="view-subtitle">Interactive interactive traceability graph across Tier 1, Tier 2, and Tier 3 tiers</p>
-                    </div>
-                  </div>
-                  <SupplyChainNetwork hierarchyData={hierarchyData} />
-                </div>
+                <SupplyChainNetwork hierarchyData={hierarchyData} />
               )}
 
               {/* TAB 4: DATA UPLOAD */}
@@ -280,52 +270,27 @@ export default function App() {
 
               {/* TAB 6: HOTSPOTS */}
               {activeTab === 'hotspots' && (
-                <div className="view-container">
-                  <div className="view-header">
-                    <div>
-                      <h2 className="view-title">Carbon Hotspots & Impact Analysis</h2>
-                      <p className="view-subtitle">Automated 80/20 Pareto hotspot identification and material/transport breakdown</p>
-                    </div>
-                    <div className="view-actions">
-                      <button
-                        className="btn btn-secondary"
-                        onClick={handleSync}
-                        disabled={isSyncing}
-                      >
-                        {isSyncing ? '⏳ Syncing...' : '🔄 Sync Hotspots'}
-                      </button>
-                    </div>
-                  </div>
-
-                  <HotspotsTable
-                    suppliers={hotspotsData?.highest_emission_suppliers || []}
-                    onSyncHotspots={handleSync}
-                    isSyncing={isSyncing}
-                    onOpenGuide={handleOpenGuide}
-                  />
-
-                  <div className="two-column-grid mt-6">
-                    <MaterialHotspots
-                      materials={hotspotsData?.highest_emission_materials || materialData || []}
-                    />
-                    <TransportHotspots
-                      transportModes={hotspotsData?.highest_emission_transport_modes || transportData || []}
-                    />
-                  </div>
-                </div>
+                <HotspotsView
+                  suppliers={hotspotsData?.highest_emission_suppliers || []}
+                  materials={hotspotsData?.highest_emission_materials || materialData || []}
+                  transportModes={hotspotsData?.highest_emission_transport_modes || transportData || []}
+                  onSyncHotspots={handleSync}
+                  isSyncing={isSyncing}
+                  onOpenGuide={handleOpenGuide}
+                />
               )}
 
               {/* TAB 7: RECOMMENDATIONS */}
               {activeTab === 'recommendations' && (
                 <div className="view-container">
-                  <RecommendationsPanel period={period} />
+                  <RecommendationsPanel period={period} onOpenGuide={handleOpenGuide} />
                 </div>
               )}
 
               {/* TAB 8: REPORTS */}
               {activeTab === 'reports' && (
                 <div className="view-container">
-                  <ReportingPanel period={period} />
+                  <ReportingPanel period={period} onOpenGuide={handleOpenGuide} />
                 </div>
               )}
 
