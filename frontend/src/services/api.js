@@ -276,6 +276,40 @@ export const carbonApi = {
     });
   },
 
+  // Supplier Activity Data Endpoints
+  async getActivityData(params = {}) {
+    const searchParams = new URLSearchParams();
+    if (params.supplier_id) searchParams.append('supplier_id', params.supplier_id);
+    if (params.reporting_period) searchParams.append('reporting_period', params.reporting_period);
+    if (params.verification_status) searchParams.append('verification_status', params.verification_status);
+    if (params.domain) searchParams.append('domain', params.domain);
+    if (params.search) searchParams.append('search', params.search);
+    const query = searchParams.toString() ? `?${searchParams.toString()}` : '';
+    return await apiRequest(`/activity-data/${query}`);
+  },
+
+  async submitActivityData(payload) {
+    return await apiRequest('/activity-data/', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async updateVerificationStatus(activityId, status, notes = '') {
+    return await apiRequest(`/activity-data/${activityId}/`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        verification_status: status,
+        verification_notes: notes,
+      }),
+    });
+  },
+
+  async getCalculations(period = null) {
+    const query = period ? `?reporting_period=${encodeURIComponent(period)}` : '';
+    return await apiRequest(`/calculations/${query}`);
+  },
+
   // Gateway health verification
   async getGatewayHealth() {
     try {

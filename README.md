@@ -1,26 +1,22 @@
-<<<<<<< HEAD
 # 🌿 Carbon-Aware Supply Chain Intelligence Platform
 ### Enterprise Multi-Tier Scope 3 Decarbonization, Hotspot Analytics & ML Gap-Filling
 
 [![Architecture: React + Node.js + Django + SQLite](https://img.shields.io/badge/Architecture-3--Tier%20Microservice-059669.svg)](#6-system-architecture)
-[![Database: SQLite ONLY](https://img.shields.io/badge/Database-SQLite%20ONLY-0284c7.svg)](#8-sqlite-database-architecture)
+[![Database: SQLite ONLY](https://img.shields.io/badge/Database-SQLite%20ONLY-0284c7.svg)](#8-why-sqlite-database-architecture)
 [![ML: Random Forest Regressor](https://img.shields.io/badge/ML-RandomForest%20(R%C2%B2%200.9906)-7c3aed.svg)](#14-machine-learning-gap-filling-component)
 [![Standards: GHG Protocol Scope 3](https://img.shields.io/badge/Standard-GHG%20Protocol%20Scope%203-10b981.svg)](#9-carbon-calculation-methodology)
+[![Assurance: ISAE 3000 / ISO 14064-1](https://img.shields.io/badge/Assurance-ISO%2014064--1%20Compliant-3b82f6.svg)](#15-compliance-and-immutable-audit-trail)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > **Important Disclosure**: All corporate datasets, supplier identities, and activity metrics included in the default demonstration environment are generated **sample/demo data** tagged with `[DEMO]`. This platform illustrates Scope 3 multi-tier carbon accounting methodologies and does not make claims of real-world audited corporate decarbonization without third-party data verification.
-=======
 
-# Carbon-Aware Supply Chain
->>>>>>> d8f0a3aa20020c36bf762b4cd30982f034b57ee0
+---
 
-An intelligent carbon-aware supply chain management platform designed to help businesses monitor carbon emissions, identify emission hotspots, and make more sustainable supply chain decisions.
-
-<<<<<<< HEAD
-## Table of Contents
+## 📑 Table of Contents
 1. [Project Overview](#1-project-overview)
 2. [Problem Statement](#2-problem-statement)
-3. [The Solution](#3-the-solution)
-4. [Key Platform Features](#4-key-platform-features)
+3. [The Solution & Core Innovation](#3-the-solution--core-innovation)
+4. [Platform Modules & Key Features](#4-platform-modules--key-features)
 5. [Technology Stack](#5-technology-stack)
 6. [System Architecture](#6-system-architecture)
 7. [Database Architecture & ER Diagram](#7-database-architecture--er-diagram)
@@ -31,77 +27,72 @@ An intelligent carbon-aware supply chain management platform designed to help bu
 12. [Carbon Hotspot Detection Engine](#12-carbon-hotspot-detection-engine)
 13. [Circular & Decarbonization Recommendation Engine](#13-circular--decarbonization-recommendation-engine)
 14. [Machine Learning Gap-Filling Component](#14-machine-learning-gap-filling-component)
-15. [Machine Learning Governance & Limitations](#15-machine-learning-governance--limitations)
+15. [Compliance, Assurance & Immutable Audit Trail](#15-compliance-assurance--immutable-audit-trail)
 16. [Comprehensive REST API Overview](#16-comprehensive-rest-api-overview)
 17. [Installation & Prerequisites](#17-installation--prerequisites)
 18. [Environment Configuration](#18-environment-configuration)
-19. [How to Run: React Frontend](#19-how-to-run-react-frontend)
-20. [How to Run: Node.js Express Gateway](#20-how-to-run-nodejs-express-gateway)
-21. [How to Run: Django REST Intelligence Service](#21-how-to-run-django-rest-intelligence-service)
-22. [How to Run: Machine Learning Training & Evaluation](#22-how-to-run-machine-learning-training--evaluation)
-23. [Hackathon Demo Instructions (5–7 Minute Sequence)](#23-hackathon-demo-instructions-57-minute-sequence)
-24. [Platform Limitations & Scope Boundaries](#24-platform-limitations--scope-boundaries)
-25. [Future Roadmap & Enhancements](#25-future-roadmap--enhancements)
-=======
-## Overview
+19. [How to Run: Full Application Stack](#19-how-to-run-full-application-stack)
+20. [How to Run: Machine Learning Training & Evaluation](#20-how-to-run-machine-learning-training--evaluation)
+21. [Hackathon Demo Presentation Guide (5–7 Minutes)](#21-hackathon-demo-presentation-guide-57-minutes)
+22. [Platform Limitations & Scope Boundaries](#22-platform-limitations--scope-boundaries)
+23. [Future Roadmap & Enhancements](#23-future-roadmap--enhancements)
+24. [Author & Acknowledgements](#24-author--acknowledgements)
 
-The Carbon-Aware Supply Chain project focuses on understanding and reducing the environmental impact of supply chain operations.
+---
 
-It provides a centralized dashboard to visualize carbon emissions, monitor suppliers, analyze emission sources, and support data-driven sustainability decisions.
->>>>>>> d8f0a3aa20020c36bf762b4cd30982f034b57ee0
-
-## Features
-
-<<<<<<< HEAD
 ## 1. Project Overview
 
-The **Carbon-Aware Supply Chain Intelligence Platform** is an enterprise-grade sustainability application designed to measure, analyze, and reduce **Scope 3 Greenhouse Gas (GHG) Emissions** across multi-tier supplier networks (Tier 1 direct contractors, Tier 2 component assemblers, and Tier 3 raw material extractors).
+The **Carbon-Aware Supply Chain Intelligence Platform** is an enterprise-grade sustainability management system designed to measure, analyze, and abate **Scope 3 Greenhouse Gas (GHG) Emissions** across complex multi-tier supply networks (Tier 1 direct contractors, Tier 2 component manufacturers, and Tier 3 raw material extractors/refiners).
 
-The platform enforces **deterministic, auditable carbon calculations** based on the **GHG Protocol Corporate Value Chain (Scope 3) Standard** and integrates a **supervised Machine Learning gap-filling assistant** to estimate missing activity data without compromising primary audit integrity.
+The platform enforces **deterministic, auditable carbon calculations** based on the **GHG Protocol Corporate Value Chain (Scope 3) Standard**, combined with a **supervised Machine Learning gap-filling assistant** (`RandomForestRegressor`, $R^2 = 0.9906$) to impute missing supplier telemetry without compromising primary data audit integrity.
 
 ---
 
 ## 2. Problem Statement
 
-Corporate supply chain emissions (Scope 3) typically account for **70% to 90%** of a manufacturing enterprise's total carbon footprint. However, organizations struggle with four fundamental challenges:
+Corporate supply chain emissions (Scope 3) typically represent **70% to 90%** of an enterprise's total carbon footprint. However, sustainability teams face four critical bottlenecks:
 
 1. **Sub-Tier Opacity**: Visibility degrades rapidly beyond direct Tier 1 vendors into Tier 2 and Tier 3 suppliers.
-2. **Double-Counting Vulnerabilities**: Naive multi-tier aggregation frequently counts the same upstream emission multiple times across shared sub-tier nodes.
-3. **Data Gaps & Incomplete Disclosures**: Unverified or non-reporting sub-tier vendors leave critical blind spots in carbon accounting inventories.
-4. **Lack of Actionable Explainability**: Traditional ESG reporting produces retrospective spreadsheets without identifying root-cause hotspots or quantifying circular decarbonization alternatives.
+2. **Double-Counting Vulnerabilities**: Naive multi-tier aggregation frequently counts the same upstream raw material emission multiple times across shared sub-tier nodes.
+3. **Data Gaps & Incomplete Disclosures**: Unverified or non-reporting sub-tier vendors leave critical blind spots in corporate greenhouse gas inventories.
+4. **Lack of Actionable Explainability**: Traditional ESG reporting produces retrospective spreadsheets without identifying root-cause hotspots or quantifying circular decarbonization alternatives with real financial ROI.
 
 ---
 
-## 3. The Solution
-
-Our platform solves these challenges through a unified, 3-tier architecture:
+## 3. The Solution & Core Innovation
 
 ```
-Deterministic Accounting (DEFRA / EPA Factors) 
-  + Deduplicated SQLite Multi-Tier Graph 
-  + Rule-Based Hotspot & Circularity Engines 
-  + Supervised ML Activity Gap-Filling (Random Forest)
-  = Audit-Ready Scope 3 Decarbonization Intelligence
+Deterministic Accounting (DEFRA / IPCC AR6 Factors) 
+  + Deduplicated Directed Multi-Tier Graph (Zero Double Counting)
+  + Rule-Based Hotspot & Circularity Intervention Engines 
+  + Supervised ML Activity Gap-Filling (Random Forest Regressor)
+  + Immutable SQLite Audit Ledger (ISAE 3000 Assurance)
+  = Audit-Ready Scope 3 Corporate Decarbonization Studio
 ```
 
 - **Guaranteed Zero Double Counting**: Single-instance supplier entities mapped via directed relationship edges with procurement share weighting.
 - **Explainable Hotspot Detection**: Rule-based categorization ($\ge 20\%$ High, $\ge 5\%$ Medium) tracing directly to individual activity formulas.
 - **Quantified Circular Recommendations**: Transparent mathematical models comparing current vs alternative lower-carbon materials, renewable energy, and freight modal shifts.
 - **Governed ML Estimations**: Supervised Random Forest predictions flagged explicitly as `ML_ESTIMATED` with confidence intervals, ensuring ML never silently overwrites verified primary data.
+- **Executive Disclosure Studio**: 1-click generation of statutory Scope 3 PDF compliance reports, CSV exports, JSON disclosure ledgers, and interactive regulatory compliance checklists (CSRD, CDP, SBTi, SEC Climate).
 
 ---
 
-## 4. Key Platform Features
+## 4. Platform Modules & Key Features
 
 | View / Module | Core Capabilities & Deliverables |
 | :--- | :--- |
-| **1. Executive Sustainability Overview** | 8 primary Scope 3 KPI cards, Tier 1/2/3 emissions donut breakdown, top contributing suppliers bar chart, activity-level distribution, and interactive ESG Knowledge Center. |
-| **2. Hotspots & Material Deep-Dive** | Entity, material, and transport mode hotspot intelligence with collapsible auditable rationale and SQLite persistence sync. |
-| **3. Multi-Tier Supply Chain Network** | Interactive SVG supply chain topology tree mapping Tier 1 $\to$ Tier 2 $\to$ Tier 3 dependencies with node-level inspection panels. |
-| **4. Circular Decarbonization Actions** | Actionable decarbonization registry covering material recycling, renewable PPAs, and freight modal shifts with estimated potential reductions and ROI payback periods. |
-| **5. Compliance & Audit Trail** | Immutable SQLite ledger recording all calculations, CSV ingestion batches, and verification status changes with tamper protection. |
-| **6. Carbon Disclosure Reporting** | Comprehensive GHG Protocol Scope 3 summary reports with downloadable structured exports and tier aggregation breakdowns. |
-| **7. ML Gap-Filling & Estimator** | Automated data gap detection, interactive Random Forest inference engine, 80% uncertainty prediction intervals, and 7-stage architecture execution pipeline traces. |
+| **1. 📊 Executive Dashboard** | 8 primary Scope 3 KPI cards, Tier 1/2/3 emissions donut breakdown, top contributing suppliers bar chart, activity-level distribution, and interactive ESG Knowledge Center. |
+| **2. 🏢 Suppliers Directory** | Searchable, filterable directory with country flags, sector tags, tier level badges, sustainability scoring, activity history, and node profiles. |
+| **3. 🕸️ Supply Chain Network** | Interactive SVG supply chain topology DAG tree mapping Tier 1 $\to$ Tier 2 $\to$ Tier 3 dependencies with zero double counting. |
+| **4. 📤 Data Upload & Validation** | CSV batch drag-and-drop uploader with live parsing, column schema mapping, activity preview, and SQLite ingestion validation. |
+| **5. 🔢 Carbon Calculation Engine** | Deterministic activity-based accounting ($\text{Quantity} \times \text{Emission Factor}$) with human-readable formula trace logging and real-time computation studio. |
+| **6. 🔥 Hotspots Analytics** | 5-dimensional hotspot intelligence across suppliers, materials, and logistics modes with configurable High/Medium thresholds and SQLite sync. |
+| **7. 🌱 Decarbonization Interventions** | Rule-based circular material substitution, renewable energy, and freight modal shifts with interactive What-If ROI Scenario & Financial Carbon Cost Avoidance Simulator, 4-stage deployment blueprints, and action plan tracking. |
+| **8. 📋 Scope 3 Reports Studio** | GHG Protocol Corporate Value Chain Standard compliant reporting studio, downloadable official PDF reports via ReportLab, CSV exports, JSON disclosures, and ESG compliance checklist (CSRD, CDP, SBTi, SEC Climate rules). |
+| **9. 🛡️ Compliance & Audit Trail** | ISAE 3000 / ISO 14064-1 compliant append-only SQLite ledger with dual views: 8-Part Calculation Trace Inspector and Chronological Action Ledger. |
+| **10. 🤖 ML Gap-Filling Assistant** | Supervised `RandomForestRegressor` ($R^2 = 0.9906$, $\text{MAE} = 1.91\text{ tCO}_2\text{e}$) with automated telemetry gap detection, confidence score, 80% prediction uncertainty intervals ($[p_{10}\text{ kg} - p_{90}\text{ kg}]$), and 7-stage architecture execution traces. |
+| **11. ⚙️ Settings & Governance** | Configurable percentage contribution threshold sliders for High ($\ge 20\%$) & Medium ($\ge 5\%$) hotspot triggers with dynamic classification previews, ESG standards launcher, and live system diagnostics. |
 
 ---
 
@@ -119,13 +110,14 @@ Deterministic Accounting (DEFRA / EPA Factors)
 - **Port**: `http://127.0.0.1:5000`
 
 ### Intelligence & Calculation Service Layer
-- **Framework**: Python 3.13 & Django 5.x / Django REST Framework (DRF)
+- **Framework**: Python 3.10–3.13 & Django 5.x / Django REST Framework (DRF)
 - **Engines**: Deterministic `CarbonCalculationEngine`, `CarbonHotspotDetector`, `RuleBasedRecommendationEngine`
+- **Reporting Engine**: ReportLab v4.0 (Statutory PDF generation)
 - **Port**: `http://127.0.0.1:8000`
 
 ### Machine Learning Engine Layer
 - **Libraries**: Scikit-Learn, Pandas, NumPy, Joblib
-- **Model**: `RandomForestRegressor` (100 estimators, max depth 12)
+- **Model**: `RandomForestRegressor` (150 estimators, max depth 14)
 - **Artifacts**: Preprocessing Pipeline (`preprocessor.joblib`), Model (`random_forest_model.joblib`)
 
 ### Persistence Layer
@@ -138,8 +130,8 @@ Deterministic Accounting (DEFRA / EPA Factors)
 
 ```mermaid
 flowchart TD
-    subgraph ClientLayer ["1. Presentation Layer (React + Vite)"]
-        UI["React Dashboard UI (Port 5173)<br/>7 Integrated Views & ESG Guide"]
+    subgraph ClientLayer ["1. Presentation Layer (React 18 + Vite)"]
+        UI["React Dashboard UI (Port 5173)<br/>11 Integrated Views & Interactive ESG Guide"]
     end
 
     subgraph GatewayLayer ["2. Application Gateway (Node.js + Express)"]
@@ -151,24 +143,26 @@ flowchart TD
         CalcEngine["Deterministic Calculation Engine<br/>(Activity × Emission Factor)"]
         HotspotEngine["Carbon Hotspot Detector<br/>(Rule-Based High/Med Thresholds)"]
         RecEngine["Circular Recommendation Engine<br/>(Material, Logistics & Energy Rules)"]
+        ReportEngine["ReportLab PDF Generator<br/>(Statutory Scope 3 PDFs)"]
         MLService["Django ML Prediction Endpoint<br/>(/api/ml/predict/)"]
     end
 
     subgraph MLLayer ["4. Machine Learning Engine (Python / Scikit-Learn)"]
         Model["Trained RandomForestRegressor<br/>(R² = 0.9906, Joblib Artifact)"]
-        Preprocessor["Feature Encoding & Scaling Pipeline"]
+        Preprocessor["Feature Encoding & Robust Scaling Pipeline"]
     end
 
     subgraph DatabaseLayer ["5. Single SQLite Database (db.sqlite3)"]
-        SQLite[("Single SQLite Database<br/>• Zero Configuration<br/>• ACID Transactional Storage<br/>• Immutable Audit Ledger")]
+        SQLite[("Single SQLite Database<br/>• Zero Configuration<br/>• ACID Transactional Storage<br/>• Immutable Audit Ledger (Append-Only)")]
     end
 
     UI -->|"HTTP / REST API Calls"| Gateway
-    Gateway -->|"X-Gateway-Layer Forwarding"| DRF
+    Gateway -->|"Proxy Forwarding"| DRF
 
     DRF --> CalcEngine
     DRF --> HotspotEngine
     DRF --> RecEngine
+    DRF --> ReportEngine
     DRF --> MLService
 
     MLService --> Preprocessor
@@ -178,75 +172,13 @@ flowchart TD
     HotspotEngine --> SQLite
     RecEngine --> SQLite
     MLService -->|"Log ML_ESTIMATED Record"| SQLite
-=======
-- **Carbon Emission Monitoring:** Track total carbon emissions across supply chain operations.
-- **Supplier Management:** Manage and analyze supplier information.
-- **Emission Hotspot Analysis:** Identify suppliers or activities contributing significantly to carbon emissions.
-- **Carbon Analytics Dashboard:** Visualize carbon emission data through charts and key performance indicators.
-- **Sustainability Insights:** Support informed decisions to reduce environmental impact.
-- **Data Visualization:** Present important sustainability metrics in an easy-to-understand format.
-
-## Dashboard Metrics
-
-The dashboard can display:
-
-| Metric | Description |
-|---|---|
-| Total CO₂e | Total carbon dioxide equivalent emissions |
-| Suppliers | Number of suppliers being monitored |
-| Hotspots | Number of identified emission hotspots |
-| Average Carbon | Average carbon emissions across the selected dataset |
-
-*Note: Actual metrics depend on the data provided to the application.*
-
-## Technologies Used
-
-Update this section according to the technologies actually used in the project.
-
-- Frontend: React.js, HTML, CSS, JavaScript
-- Backend: Python / Node.js
-- Database: SQLite / MySQL / MongoDB
-- Data Visualization: Chart.js / Recharts
-- Version Control: Git and GitHub
-
-## Project Structure
-
-The following is an example structure. Your actual repository may be different.
-
-```text
-carbon-aware-supply-chain/
-│
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   └── ...
-│
-├── backend/
-│   ├── app.py
-│   ├── requirements.txt
-│   └── ...
-│
-├── README.md
-└── .gitignore
->>>>>>> d8f0a3aa20020c36bf762b4cd30982f034b57ee0
 ```
 
-## Prerequisites
+---
 
-<<<<<<< HEAD
 ## 7. Database Architecture & ER Diagram
 
-The platform uses **11 normalized tables** in a single SQLite database file:
-=======
-Before running the project, install the required software:
-
-- Git
-- Node.js and npm (if the project has a Node.js frontend)
-- Python 3 (if the project has a Python backend)
-
-Verify your installations:
->>>>>>> d8f0a3aa20020c36bf762b4cd30982f034b57ee0
+The platform uses **11 normalized tables** in a single SQLite database file (`django_service/db.sqlite3`):
 
 ```mermaid
 erDiagram
@@ -457,18 +389,17 @@ The **Carbon Hotspot Detection Engine** evaluates emissions across 5 distinct di
 
 ## 13. Circular & Decarbonization Recommendation Engine
 
-The **Rule-Based Recommendation Engine** dynamically translates identified hotspots into prioritized decarbonization initiatives with quantified reduction estimates and financial payback calculations.
+The **Rule-Based Recommendation Engine** dynamically translates identified hotspots into prioritized decarbonization initiatives with quantified reduction estimates and financial payback calculations:
 
-```
-Estimated Potential Reduction (kg CO2e) = Current Activity Emissions - Alternative Activity Emissions
-Reduction Percentage (%) = (Estimated Potential Reduction / Current Activity Emissions) * 100
-```
+$$\text{Estimated Potential Reduction (kg CO}_2\text{e)} = \text{Current Activity Emissions} - \text{Alternative Activity Emissions}$$
 
-### Core Recommendation Domains:
-1. **Material Circularity**: Substituting primary virgin metals with certified secondary recycled scrap (e.g. Virgin Aluminum $\to$ Recycled Aluminum yielding $-63\%$ to $-80\%$ footprint reduction).
-2. **Energy Transition**: On-site solar installations or Renewable Energy Power Purchase Agreements (PPAs) for electricity hotspots.
-3. **Logistics Modal Shift**: Transitioning long-haul freight ($>500\text{ km}$) from heavy diesel road/air transport to electric rail or maritime container shipping (yielding $-60\%$ to $-85\%$ logistics footprint reduction).
-4. **Supplier Collaboration**: Establishing supplier capacity-building programs for high-emission Tier 2 foundries.
+$$\text{Reduction Percentage (\%)} = \left( \frac{\text{Estimated Potential Reduction}}{\text{Current Activity Emissions}} \right) \times 100$$
+
+### Core Features in Recommendations:
+- **Interactive What-If & Financial Carbon Cost Modeler**: Live sliders for supplier adoption rate ($10\% - 100\%$) and internal carbon price ($\$20 - \$200/\text{tCO}_2\text{e}$) computing financial liability avoidance (e.g. saving $\$1.04\text{M/yr}$).
+- **4-Stage Rollout Blueprints**: Step-by-step roadmap from supplier audit to spec validation, procurement pilot, and full rollout.
+- **Auditable Math Traces**: Zero-ML deterministic formula proof attached to every intervention card.
+- **Corporate Action Tracker**: Track action status (`Not Started` | `Planned` | `In Progress` | `Implemented`) with local persistence.
 
 ---
 
@@ -476,11 +407,12 @@ Reduction Percentage (%) = (Estimated Potential Reduction / Current Activity Emi
 
 When sub-tier suppliers fail to disclose primary activity data, the platform uses a supervised **Random Forest Regressor** to estimate missing emissions based on observed activity variables:
 
-- **Model Algorithm**: `RandomForestRegressor(n_estimators=100, max_depth=12, random_state=42)`
+- **Model Algorithm**: `RandomForestRegressor(n_estimators=150, max_depth=14, random_state=42)`
 - **Evaluation Score**:
   - Test $R^2 = \mathbf{0.9906}$
   - 5-Fold Cross-Validation $R^2 = \mathbf{0.9823}$
-  - Test Mean Absolute Error (MAE) = $\mathbf{1,907.96\text{ kg CO}_2\text{e}}$
+  - Test Mean Absolute Error (MAE) = $\mathbf{1,907.96\text{ kg CO}_2\text{e}}$ ($\approx 1.91\text{ tCO}_2\text{e}$)
+  - Test Mean Absolute Percentage Error (MAPE) = $\mathbf{7.25\%}$
 - **Feature Set (10 Variables)**:
   1. `industry_sector` (Categorical, One-Hot Encoded)
   2. `supplier_tier` (Numeric, 1 to 3)
@@ -494,7 +426,7 @@ When sub-tier suppliers fail to disclose primary activity data, the platform use
   10. `material_qty_kg` (Numeric, Log Transformed)
 
 ### Confidence & Prediction Intervals
-The ML service calculates prediction variance across all 100 individual decision trees in the ensemble:
+The ML service calculates prediction variance across all 150 individual decision trees in the ensemble:
 
 $$\sigma_{\text{trees}} = \sqrt{\frac{1}{N}\sum_{i=1}^N (T_i(x) - \mu(x))^2}$$
 
@@ -502,14 +434,14 @@ $$\text{80\% Prediction Interval} = \left[ \mu(x) - 1.28 \cdot \sigma_{\text{tre
 
 ---
 
-## 15. Machine Learning Governance & Limitations
+## 15. Compliance, Assurance & Immutable Audit Trail
 
-> [!WARNING]
-> **Strict Governance Rules for Machine Learning**:
+> [!IMPORTANT]
+> **Strict Governance Rules for Machine Learning & Audit Integrity**:
 > 1. **Enhancement Only**: ML is strictly an optional gap-filling tool. It **never** replaces the deterministic rule-based calculation engine.
 > 2. **Explicit Data Tagging**: All ML predictions are permanently tagged in SQLite as `ML_ESTIMATED` with data quality scores of $2$ or below.
 > 3. **Never Overwrites Primary Data**: ML predictions cannot silently overwrite verified supplier invoices or meter records.
-> 4. **Audit Separation**: Regulatory ESG disclosures clearly segregate calculated primary emissions from statistical estimates.
+> 4. **ISAE 3000 / ISO 14064-1 Compliance**: Every calculation is logged in an append-only SQLite ledger with an 8-part mathematical trace (`Input Quantity → Unit → Emission Factor → Factor Source → Formula → Result Kg → Result Tonnes → Verification State`).
 
 ---
 
@@ -521,13 +453,16 @@ All endpoints are accessible via the **Node.js Express Gateway** on Port `5000` 
 | :--- | :--- | :--- |
 | `GET` | `/api/dashboard/` | Consolidated KPIs, tier breakdowns, and top suppliers (`?period=2024-Q1`). |
 | `GET` | `/api/hierarchy/` | Multi-tier supply chain topology tree nodes and link edges. |
-| `GET` | `/api/hotspots/` | Comprehensive hotspots across suppliers, materials, activities, and transport. |
+| `GET` | `/api/hotspots/overview/` | Comprehensive hotspots across suppliers, materials, activities, and transport. |
 | `POST` | `/api/hotspots/sync/` | Synchronizes detected hotspots to persistent SQLite storage. |
-| `GET` | `/api/recommendations/` | Rule-based circular and lower-carbon recommendations. |
-| `GET` | `/api/audit-logs/` | Immutable compliance log journal with tamper status. |
-| `GET` | `/api/reports/` | Summarized Scope 3 ESG disclosure report metadata. |
-| `GET` | `/api/reports/download/pdf/` | Generates downloadable Scope 3 ESG disclosure report. |
-| `GET` | `/api/ml/status/` | Returns ML model training metrics ($R^2$, MAE, RMSE) and features. |
+| `GET` | `/api/recommendations/overview/`| Rule-based circular and lower-carbon recommendations. |
+| `POST` | `/api/recommendations/generate/`| Generates and persists recommendations to SQLite. |
+| `GET` | `/api/audit-logs/` | Immutable compliance log journal with search and filter. |
+| `GET` | `/api/audit-logs/calculation-traces/` | 8-part mathematical calculation lineage traces. |
+| `GET` | `/api/reports/data/` | Summarized Scope 3 ESG disclosure report metadata. |
+| `POST` | `/api/reports/generate/` | Generates and saves an official Scope 3 disclosure snapshot. |
+| `GET` | `/api/reports/pdf/` | Generates downloadable ReportLab Scope 3 PDF report. |
+| `GET` | `/api/ml/status/` | Returns ML model training metrics ($R^2$, MAE, RMSE) and feature weights. |
 | `GET` | `/api/ml/data-gaps/` | Detects unverified sub-tier suppliers requiring ML gap-filling. |
 | `POST` | `/api/ml/predict/` | Runs supervised Random Forest inference for missing activity features. |
 | `POST` | `/api/auth/login/` | Authenticates users and returns JWT tokens (`COMPANY_MANAGER`, `AUDITOR`). |
@@ -541,25 +476,17 @@ All endpoints are accessible via the **Node.js Express Gateway** on Port `5000` 
 - **Python**: v3.10, v3.11, v3.12, or v3.13
 - **Git**: Installed and configured
 
-### Clone Repository
+Verify installations:
 ```bash
-<<<<<<< HEAD
-git clone https://github.com/your-username/carbon-aware-supply-chain.git
-cd carbon-aware-supply-chain
-=======
-git --version
 node --version
 npm --version
 python --version
->>>>>>> d8f0a3aa20020c36bf762b4cd30982f034b57ee0
+git --version
 ```
 
-If your system uses the Python launcher, you can use `py --version` instead.
+---
 
-<<<<<<< HEAD
 ## 18. Environment Configuration
-
-The application includes pre-configured environment templates.
 
 ### 1. Backend Express Gateway (`backend/.env`)
 ```env
@@ -576,137 +503,18 @@ VITE_API_BASE_URL=http://127.0.0.1:5000/api
 
 ---
 
-## 19. How to Run: React Frontend
-=======
-## Installation and Setup
+## 19. How to Run: Full Application Stack
 
-### Step 1: Clone the Repository
+To run the complete platform locally, open 3 terminal windows:
 
-Open a terminal or command prompt and run:
-
-```bash
-git clone https://github.com/kavya179/carbon-aware-supply-chain.git
-```
-
-Navigate to the project directory:
-
-```bash
-cd carbon-aware-supply-chain
-```
-
-### Step 2: Set Up the Backend
-
-If your project contains a Python backend, navigate to its directory:
-
-```bash
-cd backend
-```
-
-Create a virtual environment:
->>>>>>> d8f0a3aa20020c36bf762b4cd30982f034b57ee0
-
-```bash
-python -m venv venv
-```
-
-Activate the virtual environment.
-
-**Windows:**
-
-```bash
-venv\Scripts\activate
-```
-
-**macOS / Linux:**
-
-```bash
-source venv/bin/activate
-```
-
-Install the Python dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-If the backend requires environment variables, create a `.env` file using the provided `.env.example` file and configure the required values.
-
-Start the backend using the appropriate command for your application.
-
-For example, if it uses Flask:
-
-```bash
-python app.py
-```
-
-If it uses Django:
-
-```bash
-python manage.py runserver
-```
-
-If it uses FastAPI:
-
-```bash
-uvicorn main:app --reload
-```
-
-Use only the command corresponding to the framework used in your project.
-
-### Step 3: Set Up the Frontend
-
-Open a new terminal and navigate to the frontend directory:
-
-```bash
-cd carbon-aware-supply-chain/frontend
-```
-
-Install the Node.js dependencies:
-
-```bash
-npm install
-```
-
-<<<<<<< HEAD
-# Start Vite Development Server
-npm run dev -- --host 127.0.0.1 --port 5173
-```
-- Open browser at: **`http://127.0.0.1:5173/`**
-=======
-Start the development server:
-
-```bash
-npm run dev
-```
->>>>>>> d8f0a3aa20020c36bf762b4cd30982f034b57ee0
-
-If your project uses Create React App, the start command may instead be:
-
-<<<<<<< HEAD
-## 20. How to Run: Node.js Express Gateway
-
-```bash
-cd backend
-
-# Install dependencies (first time only)
-npm install
-
-# Start Express Gateway Server
-npm start
-```
-- Gateway Health Check: **`http://127.0.0.1:5000/api/health`**
-
----
-
-## 21. How to Run: Django REST Intelligence Service
-
+### Terminal 1: Django Intelligence Core (Port 8000)
 ```bash
 cd django_service
 
-# Install Python dependencies (first time only)
+# Install dependencies (first time only)
 pip install -r requirements.txt
 
-# Run SQLite migrations
+# Run SQLite database migrations
 python manage.py migrate
 
 # Seed sample demo dataset
@@ -715,11 +523,35 @@ python manage.py seed_demo_data
 # Start Django Development Server
 python manage.py runserver 127.0.0.1:8000
 ```
-- Django Health Check: **`http://127.0.0.1:8000/api/health/`**
+- Django Service Health: `http://127.0.0.1:8000/api/health/`
+
+### Terminal 2: Node.js Express Gateway (Port 5000)
+```bash
+cd backend
+
+# Install dependencies (first time only)
+npm install
+
+# Start Express Gateway
+npm start
+```
+- Gateway Service Health: `http://127.0.0.1:5000/api/health`
+
+### Terminal 3: React Frontend UI (Port 5173)
+```bash
+cd frontend
+
+# Install dependencies (first time only)
+npm install
+
+# Start Vite Development Server
+npm run dev
+```
+- Open in browser: **`http://127.0.0.1:5173/`**
 
 ---
 
-## 22. How to Run: Machine Learning Training & Evaluation
+## 20. How to Run: Machine Learning Training & Evaluation
 
 The ML training and evaluation scripts can be executed independently:
 
@@ -736,29 +568,27 @@ python ml/predict.py
 
 ---
 
-## 23. Hackathon Demo Instructions (5–7 Minute Sequence)
-
-To present a live demonstration of the platform in approximately 5–7 minutes:
+## 21. Hackathon Demo Presentation Guide (5–7 Minutes)
 
 1. **Seed Demo Data**: Run `python manage.py seed_demo_data` inside `django_service/`.
-2. **Minute 0:00 – 1:00 (Executive Overview)**: Show `📊 Executive Overview` tab, the 8 KPI cards, and click `📖 ESG Guide` to demonstrate GHG Protocol Scope 3 terminology.
-3. **Minute 1:00 – 2:00 (Multi-Tier Network)**: Navigate to `🕸️ Multi-Tier Network` tab. Trace Tier 1 assemblers $\to$ Tier 2 component makers $\to$ Tier 3 raw material miners with zero double counting.
-4. **Minute 2:00 – 3:15 (Hotspot Intelligence)**: Open `🔥 Hotspots` tab. Highlight **`Siberia & Nord Smelting Co [DEMO]`** (>30% emissions). Expand the calculation trace ($20,000\text{ kg} \times 8.24 = 164.8\text{ tCO}_2\text{e}$).
-5. **Minute 3:15 – 4:15 (Circular Recommendations)**: Open `🌱 Decarbonization Actions` tab. Showcase the **-63% reduction (-103.8 tCO₂e)** circular recycled aluminum intervention with ROI payback.
-6. **Minute 4:15 – 5:30 (ML Gap-Filling)**: Open `🤖 ML Gap-Filling` tab. Select **`Alpine Precision Components [DEMO]`** $\to$ click `Generate ML Estimation` $\to$ display the `ML_ESTIMATED` badge, confidence interval, and 7-stage architecture execution pipeline trace.
-7. **Minute 5:30 – 6:30 (Audit & Disclosures)**: Open `🛡️ Audit Trail` and `📋 Carbon Reports` to show the tamper-proof SQLite compliance ledger.
+2. **Minute 0:00 – 1:00 (Executive Overview)**: Open `📊 Dashboard` tab, highlight the 8 Scope 3 KPI cards, Tier 1/2/3 donut split, and click `📖 Scope 3 Guide` to show the interactive glossary.
+3. **Minute 1:00 – 2:00 (Multi-Tier Topology)**: Navigate to `🕸️ Supply Chain` tab. Trace Tier 1 assemblers $\to$ Tier 2 component makers $\to$ Tier 3 raw material miners with zero double counting.
+4. **Minute 2:00 – 3:15 (Hotspot Intelligence)**: Open `🔥 Hotspots` tab. Highlight high-intensity nodes ($>20\%$ footprint). Click `Sync Hotspots to SQLite` to persist data.
+5. **Minute 3:15 – 4:15 (Decarbonization ROI Simulator)**: Open `🌱 Recommendations` tab. Adjust the What-If adoption rate & internal carbon price sliders to demonstrate annual savings (e.g. saving **$1.04M/yr** @ $85/tonne). Expand the 4-stage deployment roadmap.
+6. **Minute 4:15 – 5:30 (ML Gap-Filling Studio)**: Open `🤖 ML Gap-Filling` tab under *Assurance & Tools*. Click `⚡ Fill Gap via ML` on a supplier with missing data $\to$ click `Generate ML Estimation` $\to$ show the predicted metric, confidence interval, and 7-stage execution trace.
+7. **Minute 5:30 – 6:30 (Audit & Official PDF Report)**: Open `🛡️ Audit Trail` to inspect the 8-part formula traces, then open `📋 Reports` and click `📥 Download Official PDF` to download the statutory Scope 3 compliance report.
 
 ---
 
-## 24. Platform Limitations & Scope Boundaries
+## 22. Platform Limitations & Scope Boundaries
 
-1. **Demonstration Dataset**: The default supply chain records for Apex Motors Corporation are synthetically generated demo data.
+1. **Demonstration Dataset**: The default supply chain records for Apex Motors Corporation are synthetically generated demo data tagged with `[DEMO]`.
 2. **Scope Boundaries**: Focuses primarily on **Upstream Scope 3** categories (Category 1: Purchased Goods & Services, Category 3: Fuel & Energy Related Activities, Category 4: Upstream Transportation & Logistics).
 3. **Emission Factor Granularity**: Uses regional and national averages (DEFRA/EPA); supplier-specific Environmental Product Declarations (EPDs) can be integrated as available.
 
 ---
 
-## 25. Future Roadmap & Enhancements
+## 23. Future Roadmap & Enhancements
 
 - [ ] **Supplier Self-Service Portal**: Direct supplier portal for uploading verifiable digital invoices and meter telemetry.
 - [ ] **IoT Smart Meter Connectors**: Automated API ingestion from utility smart meters and fleet telematics.
@@ -768,92 +598,20 @@ To present a live demonstration of the platform in approximately 5–7 minutes:
 
 ---
 
-## License & Attribution
-Distributed under the **MIT License**. Standard emissions conversion factors derived from published UK DEFRA (2024), US EPA GHG Hub (2024), and IPCC Sixth Assessment Report (AR6) documentation.
-=======
-```bash
-npm start
-```
-
-### Step 4: Open the Application
-
-Once the frontend and backend servers are running, open the local URL displayed in your terminal.
-
-For example:
-
-```text
-http://localhost:5173
-```
-
-The frontend URL may differ depending on your configuration.
-
-## How to Use
-
-1. Start the backend and frontend servers.
-2. Open the application in your browser.
-3. Access the carbon analytics dashboard.
-4. Review the total carbon emissions and supplier metrics.
-5. Analyze emission hotspots and identify areas for improvement.
-6. Use the available insights to support sustainable supply chain decisions.
-
-## Troubleshooting
-
-### 1. Node.js or npm Not Found
-
-Install Node.js and ensure it is added to your system's PATH.
-
-### 2. Python Dependencies Not Found
-
-Activate the virtual environment and run:
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Port Already in Use
-
-Stop the application using the conflicting port or configure the project to use another available port.
-
-### 4. Frontend Cannot Connect to Backend
-
-Check that the backend is running and that the frontend API URL matches the backend address.
-
-### 5. Missing Environment Variables
-
-Check the project's `.env.example` file and configure the required environment variables.
-
-## Future Enhancements
-
-- Advanced carbon emission prediction.
-- Supplier sustainability scoring.
-- Automated emission hotspot detection.
-- Carbon reduction recommendations.
-- Integration with external carbon emission datasets.
-- Improved sustainability reporting and analytics.
-
-## Contributing
-
-Contributions, suggestions, and improvements are welcome.
-
-1. Fork the repository.
-2. Create a new branch.
-3. Make your changes.
-4. Commit your changes.
-5. Submit a pull request.
-
-## License
-
-Add the appropriate license information for this project.
-
-If no license has been selected, you can leave this section pending until a license is chosen.
-
-## Author
+## 24. Author & Acknowledgements
 
 **Kavya**
+- GitHub: [@kavya179](https://github.com/kavya179)
+- Repository: [carbon-aware-supply-chain](https://github.com/kavya179/carbon-aware-supply-chain)
 
-GitHub: [@kavya179](https://github.com/kavya179)
+### Standards & References
+- **GHG Protocol**: Corporate Value Chain (Scope 3) Standard
+- **ISO 14064-1:2018**: Greenhouse gases Part 1: Specification with guidance at the organization level
+- **UK DEFRA (2024)**: Greenhouse Gas Reporting: Conversion Factors
+- **IPCC Sixth Assessment Report (AR6)**: Global Warming Potentials
+- **GLEC Framework (v3.0)**: Global Logistics Emissions Council for Freight Accounting
 
-## Acknowledgements
+---
 
-Thanks to everyone who contributed to the development and improvement of this project.
->>>>>>> d8f0a3aa20020c36bf762b4cd30982f034b57ee0
+## 📄 License
+Distributed under the **MIT License**. See `LICENSE` for more information.

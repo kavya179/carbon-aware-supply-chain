@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { authService } from '../services/api';
 
 export default function LoginPage({ onLoginSuccess, onSwitchToSignup }) {
   const [username, setUsername] = useState('demo_manager');
@@ -8,28 +9,36 @@ export default function LoginPage({ onLoginSuccess, onSwitchToSignup }) {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
+  const performLogin = async (userToAuth, passToAuth) => {
+    try {
+      setLoading(true);
+      setError(null);
+      await authService.login(userToAuth, passToAuth);
+      const profile = authService.getUser();
+      if (onLoginSuccess) {
+        onLoginSuccess(profile);
+      }
+    } catch (err) {
+      console.error('[LOGIN ERROR]', err);
+      setError(err.message || 'Invalid username or password. Please verify backend services.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
       setError('Please enter both username and password.');
       return;
     }
-
-    try {
-      setLoading(true);
-      setError(null);
-      await onLoginSuccess(username.trim(), password);
-    } catch (err) {
-      setError(err.message || 'Invalid username or password. Try demo accounts below.');
-    } finally {
-      setLoading(false);
-    }
+    await performLogin(username.trim(), password);
   };
 
-  const handleQuickLogin = (demoUser, demoPass) => {
+  const handleQuickLogin = async (demoUser, demoPass) => {
     setUsername(demoUser);
     setPassword(demoPass);
-    setError(null);
+    await performLogin(demoUser, demoPass);
   };
 
   return (
@@ -57,11 +66,11 @@ export default function LoginPage({ onLoginSuccess, onSwitchToSignup }) {
             </div>
             <div className="auth-feature-pill">
               <span className="pill-check">✓</span>
-              <span><strong>Zero Double Counting</strong> deterministic accounting engine</span>
+              <span><strong>Role-Based Access Control</strong> for Managers, Suppliers, and Auditors</span>
             </div>
             <div className="auth-feature-pill">
               <span className="pill-check">✓</span>
-              <span><strong>ML Gap-Filling</strong> for non-reporting sub-tier suppliers</span>
+              <span><strong>Zero Double Counting</strong> deterministic accounting engine</span>
             </div>
             <div className="auth-feature-pill">
               <span className="pill-check">✓</span>
@@ -82,7 +91,7 @@ export default function LoginPage({ onLoginSuccess, onSwitchToSignup }) {
         <div className="auth-card">
           <div className="auth-card-header">
             <h2 className="auth-card-title">Welcome Back</h2>
-            <p className="auth-card-subtitle">Sign in to your enterprise sustainability account</p>
+            <p className="auth-card-subtitle">Sign in to your role-specific sustainability workspace</p>
           </div>
 
           {error && (
@@ -142,9 +151,9 @@ export default function LoginPage({ onLoginSuccess, onSwitchToSignup }) {
               <button
                 type="button"
                 className="btn-text-link"
-                onClick={() => alert('Demo Password: Use DemoManager2026! or click 1-Click Demo Logins below.')}
+                onClick={() => alert('Demo Accounts:\n• Manager: demo_manager / DemoManager2026!\n• Auditor: demo_auditor / DemoAuditor2026!\n• Supplier: demo_supplier / DemoSupplier2026!')}
               >
-                Forgot password?
+                Need Help?
               </button>
             </div>
 
@@ -152,37 +161,46 @@ export default function LoginPage({ onLoginSuccess, onSwitchToSignup }) {
               type="submit"
               className="btn btn-primary btn-block btn-lg"
               disabled={loading}
+              style={{ background: '#065F46' }}
             >
-              {loading ? 'Authenticating...' : 'Sign In to Dashboard'}
+              {loading ? 'Authenticating Role...' : 'Sign In to Workspace'}
             </button>
           </form>
 
           {/* 1-Click Quick Demo Shortcuts */}
-          <div className="demo-shortcuts-box">
-            <div className="demo-shortcuts-title">⚡ Quick 1-Click Demo Accounts:</div>
-            <div className="demo-btns-grid">
+          <div className="demo-shortcuts-box" style={{ marginTop: '20px' }}>
+            <div className="demo-shortcuts-title" style={{ fontSize: '12px', fontWeight: 700, color: '#475569', marginBottom: '8px' }}>
+              ⚡ 1-Click Instant Demo Login by Role:
+            </div>
+            <div className="demo-btns-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
               <button
                 type="button"
                 className="btn-demo-shortcut"
+                disabled={loading}
                 onClick={() => handleQuickLogin('demo_manager', 'DemoManager2026!')}
+                title="Login as Company Manager"
               >
-                <strong>🏢 Manager</strong>
+                <strong style={{ color: '#065F46' }}>🏢 Manager</strong>
                 <span>Apex Motors</span>
               </button>
               <button
                 type="button"
                 className="btn-demo-shortcut"
+                disabled={loading}
                 onClick={() => handleQuickLogin('demo_auditor', 'DemoAuditor2026!')}
+                title="Login as Auditor"
               >
-                <strong>🛡️ Auditor</strong>
+                <strong style={{ color: '#0F766E' }}>🛡️ Auditor</strong>
                 <span>ESG Assurance</span>
               </button>
               <button
                 type="button"
                 className="btn-demo-shortcut"
+                disabled={loading}
                 onClick={() => handleQuickLogin('demo_supplier', 'DemoSupplier2026!')}
+                title="Login as Supplier"
               >
-                <strong>🏭 Supplier</strong>
+                <strong style={{ color: '#10B981' }}>🏭 Supplier</strong>
                 <span>Apex Battery</span>
               </button>
             </div>

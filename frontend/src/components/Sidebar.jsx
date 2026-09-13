@@ -1,13 +1,14 @@
 import React from 'react';
 
-const NAV_GROUPS = [
+// Navigation groups by user role
+const MANAGER_NAV = [
   {
     id: 'main',
     label: 'MAIN NAVIGATION',
     items: [
       { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-      { id: 'suppliers', label: 'Suppliers', icon: '🏢' },
       { id: 'network', label: 'Supply Chain', icon: '🕸️' },
+      { id: 'suppliers', label: 'Suppliers', icon: '🏢' },
       { id: 'upload', label: 'Data Upload', icon: '📤' },
       { id: 'calculations', label: 'Carbon Calculation', icon: '🔢' },
     ]
@@ -28,12 +29,71 @@ const NAV_GROUPS = [
     items: [
       { id: 'audit', label: 'Audit Trail', icon: '🛡️' },
       { id: 'ml', label: 'ML Gap-Filling', icon: '🤖' },
-      { id: 'settings', label: 'Settings & Standards', icon: '⚙️' },
+      { id: 'settings', label: 'Settings', icon: '⚙️' },
     ]
   }
 ];
 
-export default function Sidebar({ activeTab, onSelectTab, isOpen, onClose }) {
+const SUPPLIER_NAV = [
+  {
+    id: 'supplier-main',
+    label: 'SUPPLIER PORTAL',
+    badge: 'ACTIVE',
+    items: [
+      { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+      { id: 'profile', label: 'My Profile', icon: '🏢' },
+      { id: 'activity-data', label: 'My Activity Data', icon: '📋' },
+      { id: 'submit-data', label: 'Submit Data', icon: '📤' },
+      { id: 'history', label: 'Submission History', icon: '📜' },
+      { id: 'quality', label: 'Data Quality', icon: '📈' },
+    ]
+  },
+  {
+    id: 'supplier-tools',
+    label: 'SYSTEM & HELP',
+    items: [
+      { id: 'settings', label: 'Settings', icon: '⚙️' },
+    ]
+  }
+];
+
+const AUDITOR_NAV = [
+  {
+    id: 'auditor-main',
+    label: 'ASSURANCE & AUDIT',
+    badge: 'ISO 14064',
+    items: [
+      { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+      { id: 'verification', label: 'Data Verification', icon: '🛡️' },
+      { id: 'calculations', label: 'Carbon Calculations', icon: '🔢' },
+      { id: 'suppliers', label: 'Suppliers Under Review', icon: '🏢' },
+      { id: 'audit-trail', label: 'Audit Trail', icon: '📜' },
+      { id: 'reports', label: 'Reports', icon: '📋' },
+    ]
+  },
+  {
+    id: 'auditor-tools',
+    label: 'STANDARDS & SYSTEM',
+    items: [
+      { id: 'settings', label: 'Settings', icon: '⚙️' },
+    ]
+  }
+];
+
+export default function Sidebar({ user, role, activeTab, onSelectTab, isOpen, onClose }) {
+  const currentRole = (role || user?.role || 'COMPANY_MANAGER').toUpperCase();
+
+  let navGroups = MANAGER_NAV;
+  let roleBadgeLabel = 'ENTERPRISE SCOPE 3';
+
+  if (currentRole.includes('SUPPLIER')) {
+    navGroups = SUPPLIER_NAV;
+    roleBadgeLabel = 'SUPPLIER PORTAL';
+  } else if (currentRole.includes('AUDITOR')) {
+    navGroups = AUDITOR_NAV;
+    roleBadgeLabel = 'AUDITOR ASSURANCE';
+  }
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -45,7 +105,7 @@ export default function Sidebar({ activeTab, onSelectTab, isOpen, onClose }) {
           <div className="brand-icon-box">🌿</div>
           <div className="brand-text-stack">
             <span className="brand-title">Carbon-Aware</span>
-            <span className="brand-subtitle">Supply Chain Platform</span>
+            <span className="brand-subtitle">{roleBadgeLabel}</span>
           </div>
           {isOpen && (
             <button className="sidebar-close-btn" onClick={onClose} aria-label="Close Navigation">
@@ -56,7 +116,7 @@ export default function Sidebar({ activeTab, onSelectTab, isOpen, onClose }) {
 
         {/* Navigation List */}
         <nav className="sidebar-nav" aria-label="Main Navigation">
-          {NAV_GROUPS.map((group) => (
+          {navGroups.map((group) => (
             <div key={group.id} className="nav-group-section">
               <div className="nav-section-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span>{group.label}</span>

@@ -126,6 +126,13 @@ class Command(BaseCommand):
                 )
                 supplier_objs[code] = sup
 
+            # Link demo_supplier to Tier 1 Supplier
+            if 'SUP-DEMO-T1-01' in supplier_objs:
+                sup_u = User.objects.filter(username='demo_supplier').first()
+                if sup_u and hasattr(sup_u, 'profile'):
+                    sup_u.profile.supplier = supplier_objs['SUP-DEMO-T1-01']
+                    sup_u.profile.save()
+
             # 5. Build Multi-Tier Relationships
             # Tier 1 Relationships (direct to company, parent=None)
             t1_specs = [

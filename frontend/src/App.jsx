@@ -15,8 +15,39 @@ import ReportingPanel from './components/ReportingPanel';
 import AuditTrailPanel from './components/AuditTrailPanel';
 import MLEstimationPanel from './components/MLEstimationPanel';
 import SettingsView from './components/SettingsView';
+import SupplierDashboard from './components/SupplierDashboard';
+import AuditorDashboard from './components/AuditorDashboard';
+import AccessRestricted from './components/AccessRestricted';
 import SustainabilityConceptsModal from './components/SustainabilityConceptsModal';
 import './App.css';
+
+// Normalize role string
+function getNormalizedRole(user) {
+  if (!user || !user.role) return 'COMPANY_MANAGER';
+  const r = String(user.role).toUpperCase();
+  if (r.includes('SUPPLIER')) return 'SUPPLIER';
+  if (r.includes('AUDITOR')) return 'AUDITOR';
+  return 'COMPANY_MANAGER';
+}
+
+// Default route for a given normalized role
+function getDefaultRouteForRole(normRole) {
+  if (normRole === 'SUPPLIER') return '/supplier/dashboard';
+  if (normRole === 'AUDITOR') return '/auditor/dashboard';
+  return '/manager/dashboard';
+}
+
+// Parse pathname into role and tab
+function parsePath(pathname) {
+  const clean = pathname.replace(/^\/+|\/+$/g, '');
+  const parts = clean.split('/');
+  if (parts.length === 0 || !parts[0]) {
+    return { rolePrefix: null, subtab: 'dashboard' };
+  }
+  const rolePrefix = parts[0].toLowerCase();
+  const subtab = parts[1] ? parts[1].toLowerCase() : 'dashboard';
+  return { rolePrefix, subtab };
+}
 
 export default function App() {
   // Authentication State
@@ -25,38 +56,31 @@ export default function App() {
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { /* ignore */ }
     }
-    // Default demo session for immediate exploration
-    return {
-      name: 'Kavya',
-      username: 'demo_manager',
-      role: 'Company Manager',
-      email: 'kavya@apexmotors.com',
-      company: 'Apex Motors Corporation'
-    };
+    return null;
   });
   const [authView, setAuthView] = useState('login'); // 'login' | 'signup'
 
   // Navigation State
   const [activeTab, setActiveTab] = useState('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAccessRestricted, setIsAccessRestricted] = useState(false);
 
   // Global Filter State
   const [period, setPeriod] = useState('All Periods');
   const [highThreshold, setHighThreshold] = useState('20.0');
   const [medThreshold, setMedThreshold] = useState('5.0');
 
-  // Backend Data State
+  // Backend Data State (Manager & Executive analytics)
   const [dashboardData, setDashboardData] = useState(null);
   const [hotspotsData, setHotspotsData] = useState(null);
   const [hierarchyData, setHierarchyData] = useState(null);
   const [materialData, setMaterialData] = useState(null);
   const [transportData, setTransportData] = useState(null);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncNotice, setSyncNotice] = useState(null);
-  const [lastRefreshed, setLastRefreshed] = useState(null);
 
   // ESG & Sustainability Concepts Guide Modal State
   const [isGuideOpen, setIsGuideOpen] = useState(false);
@@ -67,9 +91,64 @@ export default function App() {
     setIsGuideOpen(true);
   }, []);
 
-  // Primary Data Fetcher
+  // Sync URL Path with Role & Tab State
+  const syncRouteFromUrl = useCallback(() => {
+    if (!user) return;
+    const normRole = getNormalizedRole(user);
+    const { rolePrefix, subtab } = parsePath(window.location.pathname);
+
+    // If on generic root or old route, push default role route
+    if (!rolePrefix || rolePrefix === 'dashboard' || rolePrefix === 'login') {
+      const defaultUrl = getDefaultRouteForRole(normRole);
+      window.history.replaceState(null, '', defaultUrl);
+      setActiveTab('dashboard');
+      setIsAccessRestricted(false);
+      return;
+    }
+
+    // Role route access check
+    const expectedPrefix = normRole === 'SUPPLIER' ? 'supplier' : normRole === 'AUDITOR' ? 'auditor' : 'manager';
+
+    if (rolePrefix !== expectedPrefix) {
+      // User is trying to access another role's route!
+      setIsAccessRestricted(true);
+    } else {
+      setIsAccessRestricted(false);
+      setActiveTab(subtab || 'dashboard');
+    }
+  }, [user]);
+
+  // Navigate to a tab and update browser URL
+  const navigateToTab = useCallback((tabId) => {
+    if (!user) return;
+    const normRole = getNormalizedRole(user);
+    const prefix = normRole === 'SUPPLIER' ? 'supplier' : normRole === 'AUDITOR' ? 'auditor' : 'manager';
+    const newPath = `/${prefix}/${tabId}`;
+
+    if (window.location.pathname !== newPath) {
+      window.history.pushState(null, '', newPath);
+    }
+    setActiveTab(tabId);
+    setIsAccessRestricted(false);
+    setMobileMenuOpen(false);
+  }, [user]);
+
+  // Listen to browser Back/Forward (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      syncRouteFromUrl();
+    };
+    window.addEventListener('popstate', handlePopState);
+    syncRouteFromUrl();
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [syncRouteFromUrl]);
+
+  // Primary Data Fetcher (for Manager views)
   const loadData = useCallback(async () => {
     if (!user) return;
+    const normRole = getNormalizedRole(user);
+    if (normRole !== 'COMPANY_MANAGER') return; // suppliers & auditors fetch their own endpoints
+
     setLoading(true);
     setError(null);
     try {
@@ -87,7 +166,6 @@ export default function App() {
       setHierarchyData(hier);
       setMaterialData(mat?.materials || []);
       setTransportData(trans?.transport_modes || trans?.transport || []);
-      setLastRefreshed(new Date().toLocaleTimeString());
     } catch (err) {
       console.error('[DASHBOARD FETCH ERROR]', err);
       setError(err.message || 'Unable to load sustainability data from backend');
@@ -117,31 +195,44 @@ export default function App() {
     }
   };
 
-  // Handle Authentication
+  // Handle Authentication Callbacks
   const handleLoginSuccess = (userData) => {
     setUser(userData);
     localStorage.setItem('user_profile', JSON.stringify(userData));
+    const normRole = getNormalizedRole(userData);
+    const targetUrl = getDefaultRouteForRole(normRole);
+    window.history.pushState(null, '', targetUrl);
     setActiveTab('dashboard');
+    setIsAccessRestricted(false);
   };
 
   const handleSignupSuccess = (userData) => {
     setUser(userData);
     localStorage.setItem('user_profile', JSON.stringify(userData));
+    const normRole = getNormalizedRole(userData);
+    const targetUrl = getDefaultRouteForRole(normRole);
+    window.history.pushState(null, '', targetUrl);
     setActiveTab('dashboard');
+    setIsAccessRestricted(false);
   };
 
   const handleLogout = () => {
     authService.logout();
     localStorage.removeItem('user_profile');
+    localStorage.removeItem('access_token');
     setUser(null);
     setAuthView('login');
+    window.history.pushState(null, '', '/login');
   };
 
-  const handleRoleChange = (newRole) => {
+  // Handle Redirection to User's Own Dashboard from Access Restricted Screen
+  const handleGoToMyDashboard = () => {
     if (!user) return;
-    const updated = { ...user, role: newRole };
-    setUser(updated);
-    localStorage.setItem('user_profile', JSON.stringify(updated));
+    const normRole = getNormalizedRole(user);
+    const defaultUrl = getDefaultRouteForRole(normRole);
+    window.history.pushState(null, '', defaultUrl);
+    setActiveTab('dashboard');
+    setIsAccessRestricted(false);
   };
 
   // Render Unauthenticated Screen
@@ -163,31 +254,31 @@ export default function App() {
     );
   }
 
+  const normRole = getNormalizedRole(user);
+
   // Render Authenticated 3-Part Enterprise Application Shell
   return (
     <div className="app-layout">
-      {/* 1. Left Sidebar */}
+      {/* 1. Role-Aware Left Sidebar */}
       <Sidebar
+        user={user}
+        role={normRole}
         activeTab={activeTab}
-        onSelectTab={(tab) => {
-          setActiveTab(tab);
-          setMobileMenuOpen(false);
-        }}
-        mobileOpen={mobileMenuOpen}
-        onCloseMobile={() => setMobileMenuOpen(false)}
+        onSelectTab={navigateToTab}
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
       />
 
       {/* Main Panel Wrapper */}
       <div className="app-main-panel">
-        {/* 2. Top Header */}
+        {/* 2. Top Header with Role Badge */}
         <Header
           user={user}
           period={period}
-          onPeriodChange={setPeriod}
+          setPeriod={setPeriod}
           onOpenGuide={handleOpenGuide}
           onLogout={handleLogout}
-          onRoleChange={handleRoleChange}
-          onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onToggleSidebar={() => setMobileMenuOpen(!mobileMenuOpen)}
         />
 
         {/* Sync Notification Banner */}
@@ -200,125 +291,151 @@ export default function App() {
 
         {/* 3. Main Content Views */}
         <main className="main-content-area">
-          {/* Loading State */}
-          {loading && !dashboardData && (
-            <div className="loading-state-card">
-              <div className="loading-spinner"></div>
-              <h3 className="loading-title">Aggregating Multi-Tier Carbon Footprint...</h3>
-              <p className="loading-sub">
-                Auditing Scope 3 calculations across Tier 1, Tier 2, and Tier 3 with zero double counting
-              </p>
-            </div>
-          )}
-
-          {/* Error State */}
-          {error && (
-            <div className="error-state-card">
-              <div className="error-icon">⚠️</div>
-              <div className="error-content">
-                <h3 className="error-title">Unable to Connect to Backend Services</h3>
-                <p className="error-desc">{error}</p>
-                <div className="error-actions">
-                  <button className="btn btn-primary" onClick={loadData}>Retry Connection</button>
-                  <span className="error-tip">Verify Django service is active on Port 8000</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* View Dispatcher */}
-          {!loading && !error && (
+          {/* ACCESS RESTRICTED SCREEN */}
+          {isAccessRestricted ? (
+            <AccessRestricted user={user} onGoToDashboard={handleGoToMyDashboard} />
+          ) : normRole === 'SUPPLIER' ? (
+            /* ──────────────── ROLE 2: SUPPLIER SUSTAINABILITY PORTAL ──────────────── */
+            <SupplierDashboard
+              user={user}
+              period={period}
+              activeSubTab={activeTab}
+              onNavigateTab={navigateToTab}
+              onOpenGuide={handleOpenGuide}
+            />
+          ) : normRole === 'AUDITOR' ? (
+            /* ──────────────── ROLE 3: AUDITOR COMPLIANCE & VERIFICATION ───────────── */
+            <AuditorDashboard
+              user={user}
+              period={period}
+              activeSubTab={activeTab}
+              onNavigateTab={navigateToTab}
+              onOpenGuide={handleOpenGuide}
+            />
+          ) : (
+            /* ──────────────── ROLE 1: COMPANY / SUSTAINABILITY MANAGER ────────────── */
             <>
-              {/* TAB 1: EXECUTIVE DASHBOARD */}
-              {activeTab === 'dashboard' && (
-                <DashboardHome
-                  user={user}
-                  period={period}
-                  dashboardData={dashboardData}
-                  hotspotsData={hotspotsData}
-                  hierarchyData={hierarchyData}
-                  materialData={materialData}
-                  transportData={transportData}
-                  onOpenGuide={handleOpenGuide}
-                  onNavigate={setActiveTab}
-                />
-              )}
-
-              {/* TAB 2: SUPPLIERS */}
-              {activeTab === 'suppliers' && (
-                <SuppliersView
-                  hierarchyData={hierarchyData}
-                  hotspotsData={hotspotsData}
-                  onOpenGuide={handleOpenGuide}
-                />
-              )}
-
-              {/* TAB 3: SUPPLY CHAIN NETWORK */}
-              {activeTab === 'network' && (
-                <SupplyChainNetwork hierarchyData={hierarchyData} />
-              )}
-
-              {/* TAB 4: DATA UPLOAD */}
-              {activeTab === 'upload' && (
-                <DataUploadView onUploadSuccess={loadData} />
-              )}
-
-              {/* TAB 5: CARBON CALCULATION */}
-              {activeTab === 'calculations' && (
-                <CarbonCalculationView period={period} onOpenGuide={handleOpenGuide} />
-              )}
-
-              {/* TAB 6: HOTSPOTS */}
-              {activeTab === 'hotspots' && (
-                <HotspotsView
-                  suppliers={hotspotsData?.highest_emission_suppliers || []}
-                  materials={hotspotsData?.highest_emission_materials || materialData || []}
-                  transportModes={hotspotsData?.highest_emission_transport_modes || transportData || []}
-                  onSyncHotspots={handleSync}
-                  isSyncing={isSyncing}
-                  onOpenGuide={handleOpenGuide}
-                />
-              )}
-
-              {/* TAB 7: RECOMMENDATIONS */}
-              {activeTab === 'recommendations' && (
-                <div className="view-container">
-                  <RecommendationsPanel period={period} onOpenGuide={handleOpenGuide} />
+              {/* Loading State for Manager */}
+              {loading && !dashboardData && (
+                <div className="loading-state-card">
+                  <div className="loading-spinner"></div>
+                  <h3 className="loading-title">Aggregating Multi-Tier Carbon Footprint...</h3>
+                  <p className="loading-sub">
+                    Auditing Scope 3 calculations across Tier 1, Tier 2, and Tier 3 with zero double counting
+                  </p>
                 </div>
               )}
 
-              {/* TAB 8: REPORTS */}
-              {activeTab === 'reports' && (
-                <div className="view-container">
-                  <ReportingPanel period={period} onOpenGuide={handleOpenGuide} />
+              {/* Error State for Manager */}
+              {error && (
+                <div className="error-state-card">
+                  <div className="error-icon">⚠️</div>
+                  <div className="error-content">
+                    <h3 className="error-title">Unable to Connect to Backend Services</h3>
+                    <p className="error-desc">{error}</p>
+                    <div className="error-actions">
+                      <button className="btn btn-primary" onClick={loadData}>Retry Connection</button>
+                      <span className="error-tip">Verify Django service is active on Port 8000</span>
+                    </div>
+                  </div>
                 </div>
               )}
 
-              {/* TAB 9: AUDIT TRAIL */}
-              {activeTab === 'audit' && (
-                <div className="view-container">
-                  <AuditTrailPanel period={period} />
-                </div>
-              )}
+              {/* View Dispatcher for Manager */}
+              {!loading && !error && (
+                <>
+                  {/* TAB 1: EXECUTIVE DASHBOARD */}
+                  {activeTab === 'dashboard' && (
+                    <DashboardHome
+                      user={user}
+                      period={period}
+                      dashboardData={dashboardData}
+                      hotspotsData={hotspotsData}
+                      hierarchyData={hierarchyData}
+                      materialData={materialData}
+                      transportData={transportData}
+                      onOpenGuide={handleOpenGuide}
+                      onNavigate={navigateToTab}
+                    />
+                  )}
 
-              {/* TAB 10: ML GAP FILLING */}
-              {activeTab === 'ml' && (
-                <div className="view-container">
-                  <MLEstimationPanel onOpenGuide={handleOpenGuide} />
-                </div>
-              )}
+                  {/* TAB 2: SUPPLY CHAIN NETWORK */}
+                  {activeTab === 'network' && (
+                    <SupplyChainNetwork hierarchyData={hierarchyData} />
+                  )}
 
-              {/* TAB 11: SETTINGS */}
-              {activeTab === 'settings' && (
-                <SettingsView
-                  highThreshold={highThreshold}
-                  medThreshold={medThreshold}
-                  onSaveThresholds={(high, med) => {
-                    setHighThreshold(high);
-                    setMedThreshold(med);
-                  }}
-                  onOpenGuide={handleOpenGuide}
-                />
+                  {/* TAB 3: SUPPLIERS VIEW */}
+                  {activeTab === 'suppliers' && (
+                    <SuppliersView
+                      hierarchyData={hierarchyData}
+                      hotspotsData={hotspotsData}
+                      onOpenGuide={handleOpenGuide}
+                    />
+                  )}
+
+                  {/* TAB 4: DATA UPLOAD */}
+                  {activeTab === 'upload' && (
+                    <DataUploadView onUploadSuccess={loadData} />
+                  )}
+
+                  {/* TAB 5: CARBON CALCULATION */}
+                  {activeTab === 'calculations' && (
+                    <CarbonCalculationView period={period} onOpenGuide={handleOpenGuide} />
+                  )}
+
+                  {/* TAB 6: HOTSPOTS */}
+                  {activeTab === 'hotspots' && (
+                    <HotspotsView
+                      suppliers={hotspotsData?.highest_emission_suppliers || []}
+                      materials={hotspotsData?.highest_emission_materials || materialData || []}
+                      transportModes={hotspotsData?.highest_emission_transport_modes || transportData || []}
+                      onSyncHotspots={handleSync}
+                      isSyncing={isSyncing}
+                      onOpenGuide={handleOpenGuide}
+                    />
+                  )}
+
+                  {/* TAB 7: RECOMMENDATIONS */}
+                  {activeTab === 'recommendations' && (
+                    <div className="view-container">
+                      <RecommendationsPanel period={period} onOpenGuide={handleOpenGuide} />
+                    </div>
+                  )}
+
+                  {/* TAB 8: REPORTS */}
+                  {activeTab === 'reports' && (
+                    <div className="view-container">
+                      <ReportingPanel period={period} onOpenGuide={handleOpenGuide} />
+                    </div>
+                  )}
+
+                  {/* TAB 9: AUDIT TRAIL */}
+                  {activeTab === 'audit' && (
+                    <div className="view-container">
+                      <AuditTrailPanel period={period} />
+                    </div>
+                  )}
+
+                  {/* TAB 10: ML GAP FILLING */}
+                  {activeTab === 'ml' && (
+                    <div className="view-container">
+                      <MLEstimationPanel onOpenGuide={handleOpenGuide} />
+                    </div>
+                  )}
+
+                  {/* TAB 11: SETTINGS */}
+                  {activeTab === 'settings' && (
+                    <SettingsView
+                      highThreshold={highThreshold}
+                      medThreshold={medThreshold}
+                      onSaveThresholds={(high, med) => {
+                        setHighThreshold(high);
+                        setMedThreshold(med);
+                      }}
+                      onOpenGuide={handleOpenGuide}
+                    />
+                  )}
+                </>
               )}
             </>
           )}
