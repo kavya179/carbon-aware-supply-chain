@@ -74,8 +74,8 @@ export default function App() {
   const [dashboardData, setDashboardData] = useState(null);
   const [hotspotsData, setHotspotsData] = useState(null);
   const [hierarchyData, setHierarchyData] = useState(null);
-  const [materialData, setMaterialData] = useState(null);
-  const [transportData, setTransportData] = useState(null);
+  const [materialData, setMaterialData] = useState([]);
+  const [transportData, setTransportData] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

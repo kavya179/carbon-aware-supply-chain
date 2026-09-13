@@ -223,7 +223,7 @@ export default function DashboardHome({
 
   const materials = (hotspotsData?.highest_emission_materials?.length > 0
     ? hotspotsData.highest_emission_materials
-    : materialData.length > 0 ? materialData : [
+    : (materialData?.length > 0) ? materialData : [
         { material_name: 'Primary Smelted Aluminium Ingots', total_emissions_tonnes: 164.8, contribution_pct: 68.2, total_quantity_kg: 20000 },
         { material_name: 'Lithium Carbonate (Battery Grade)',  total_emissions_tonnes: 78.0,  contribution_pct: 22.4, total_quantity_kg: 5000  },
         { material_name: 'Electrolytic Copper Cathode',        total_emissions_tonnes: 24.5,  contribution_pct: 7.1,  total_quantity_kg: 7000  },
@@ -232,7 +232,7 @@ export default function DashboardHome({
 
   const transport = (hotspotsData?.highest_emission_transport_modes?.length > 0
     ? hotspotsData.highest_emission_transport_modes
-    : transportData.length > 0 ? transportData : [
+    : (transportData?.length > 0) ? transportData : [
         { transport_mode: 'Road', total_emissions_tonnes: 8.01, contribution_pct: 80.9, total_distance_km: 3701 },
         { transport_mode: 'Sea',  total_emissions_tonnes: 0.96, contribution_pct: 9.7,  total_distance_km: 12000 },
         { transport_mode: 'Air',  total_emissions_tonnes: 0.90, contribution_pct: 9.1,  total_distance_km: 3000  },
